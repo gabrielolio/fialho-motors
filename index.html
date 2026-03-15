@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Hub Vitor — Fialho Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F0F0F;
+      --bg2:          #1A1A1A;
+      --bg3:          #222222;
+      --bg4:          #2A2A2A;
+      --gold:         #C8A96E;
+      --gold-light:   #DFC08A;
+      --gold-dim:     rgba(200,169,110,0.12);
+      --gold-border:  rgba(200,169,110,0.28);
+      --gold-border2: rgba(200,169,110,0.5);
+      --text:         #F0EDE8;
+      --text-2:       #C8C2BB;
+      --text-muted:   #7A7570;
+      --green:        #6FCF97;
+      --green-dim:    rgba(111,207,151,0.12);
+      --amber:        #F2C94C;
+      --amber-dim:    rgba(242,201,76,0.12);
+      --red:          #EB5757;
+      --red-dim:      rgba(235,87,87,0.12);
+      --radius:       12px;
+      --radius-sm:    8px;
+      --tab-h:        50px;
+      --header-h:     108px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ═══════════════════════════════════════════
+       SCROLLBAR
+    ═══════════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+    /* ═══════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════ */
+    header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 14px 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .logo-area h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+    }
+
+    .logo-area p {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .date-badge {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .date-badge .day-name {
+      font-size: 0.58rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+    }
+
+    .date-badge .day-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    /* ═══════════════════════════════════════════
+       TABS
+    ═══════════════════════════════════════════ */
+    .tabs {
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      gap: 0;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      flex-shrink: 0;
+      height: var(--tab-h);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 0 14px;
+      transition: color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .tab-btn:not(.active):hover { color: var(--text-2); }
+
+    /* ═══════════════════════════════════════════
+       MAIN CONTENT
+    ═══════════════════════════════════════════ */
+    main {
+      padding: 22px 16px 60px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .tab-panel { display: none; animation: fadeIn 0.2s ease; }
+    .tab-panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══════════════════════════════════════════
+       TYPOGRAPHY
+    ═══════════════════════════════════════════ */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .section-sub {
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      margin-bottom: 22px;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .block-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .label-tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+    }
+
+    .label-tag.gold { background: var(--gold-dim); color: var(--gold); border: 1px solid var(--gold-border); }
+    .label-tag.green { background: var(--green-dim); color: var(--green); }
+    .label-tag.amber { background: var(--amber-dim); color: var(--amber); }
+    .label-tag.red { background: var(--red-dim); color: var(--red); }
+
+    /* ═══════════════════════════════════════════
+       DIVIDER
+    ═══════════════════════════════════════════ */
+    .divider {
+      height: 1px;
+      background: var(--bg4);
+      margin: 22px 0;
+    }
+
+    /* ═══════════════════════════════════════════
+       CARD BASE
+    ═══════════════════════════════════════════ */
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .card:last-child { margin-bottom: 0; }
+
+    .card-gold {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    /* ═══════════════════════════════════════════
+       PROGRESS BAR
+    ═══════════════════════════════════════════ */
+    .progress-wrap {
+      margin-bottom: 22px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+
+    .progress-track {
+      background: var(--bg2);
+      border-radius: 99px;
+      height: 4px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      border-radius: 99px;
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ═══════════════════════════════════════════
+       CHECKLIST
+    ═══════════════════════════════════════════ */
+    .checklist { display: flex; flex-direction: column; gap: 9px; }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 13px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, opacity 0.2s;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .task-item:active { opacity: 0.75; }
+
+    .task-item.done {
+      opacity: 0.6;
+      border-color: transparent;
+    }
+
+    .task-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--bg4);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s;
+    }
+
+    .task-item.done .task-check {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .task-check svg { display: none; }
+    .task-item.done .task-check svg { display: block; }
+
+    .task-body { flex: 1; min-width: 0; }
+
+    .task-label {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: color 0.2s;
+      line-height: 1.3;
+    }
+
+    .task-item.done .task-label {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+
+    .task-tag {
+      display: inline-block;
+      margin-top: 5px;
+      font-size: 0.62rem;
+      background: var(--gold-dim);
+      color: var(--gold);
+      border-radius: 4px;
+      padding: 2px 7px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* ═══════════════════════════════════════════
+       POST STATUS CARDS
+    ═══════════════════════════════════════════ */
+    .week-section { margin-bottom: 20px; }
+
+    .week-day-label {
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .week-day-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--bg4);
+    }
+
+    .post-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 15px;
+      transition: border-color 0.2s;
+    }
+
+    .post-card:hover { border-color: var(--gold-border); }
+
+    .post-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .post-format {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 4px;
+    }
+
+    .post-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .post-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .status-pill {
+      flex-shrink: 0;
+      border: none;
+      border-radius: 20px;
+      padding: 5px 11px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .status-pill.pendente  { background: rgba(255,255,255,0.06); color: var(--text-muted); }
+    .status-pill.producao  { background: var(--amber-dim); color: var(--amber); }
+    .status-pill.publicado { background: var(--green-dim); color: var(--green); }
+
+    /* ═══════════════════════════════════════════
+       CALENDAR STRIP
+    ═══════════════════════════════════════════ */
+    .cal-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      margin-bottom: 16px;
+    }
+
+    .cal-day-header {
+      font-size: 0.58rem;
+      color: var(--text-muted);
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      position: relative;
+    }
+
+    .cal-day.has-post {
+      background: var(--gold-dim);
+      color: var(--gold);
+      font-weight: 600;
+      border: 1px solid var(--gold-border);
+    }
+
+    .cal-day.has-reel {
+      background: rgba(111,207,151,0.1);
+      color: var(--green);
+      font-weight: 600;
+      border: 1px solid rgba(111,207,151,0.25);
+    }
+
+    .cal-day.today {
+      outline: 2px solid var(--gold);
+      outline-offset: 1px;
+    }
+
+    /* ═══════════════════════════════════════════
+       BRANDBOOK — COLOR SWATCHES
+    ═══════════════════════════════════════════ */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .swatch-item { display: flex; flex-direction: column; gap: 7px; }
+
+    .swatch-color {
+      width: 100%;
+      aspect-ratio: 4/3;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .swatch-name {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-2);
+    }
+
+    .swatch-hex {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      font-family: monospace;
+      letter-spacing: 0.05em;
+    }
+
+    /* ═══════════════════════════════════════════
+       COPY EXAMPLES
+    ═══════════════════════════════════════════ */
+    .copy-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .copy-box {
+      background: var(--bg2);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      border: 1px solid var(--bg4);
+    }
+
+    .copy-box.correct { border-left: 3px solid var(--green); }
+    .copy-box.wrong   { border-left: 3px solid var(--red); }
+
+    .copy-box-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .copy-box.correct .copy-box-label { color: var(--green); }
+    .copy-box.wrong .copy-box-label   { color: var(--red); }
+
+    .copy-box p {
+      font-size: 0.78rem;
+      color: var(--text-2);
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════
+       WORD PILLS
+    ═══════════════════════════════════════════ */
+    .word-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 16px;
+    }
+
+    .word-pill {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .word-pill.yes { background: var(--green-dim); color: var(--green); }
+    .word-pill.no  { background: var(--red-dim); color: var(--red); text-decoration: line-through; }
+
+    /* ═══════════════════════════════════════════
+       STRATEGY — PHASES
+    ═══════════════════════════════════════════ */
+    .phase-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      margin-bottom: 12px;
+    }
+
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .phase-badge {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.7rem;
+      font-style: italic;
+      color: var(--text-muted);
+      background: var(--bg4);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    .phase-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+    }
+
+    .phase-price {
+      margin-left: auto;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .phase-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .phase-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 0.82rem;
+      color: var(--text-2);
+      line-height: 1.4;
+    }
+
+    .phase-list li::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* ═══════════════════════════════════════════
+       KPI GRID
+    ═══════════════════════════════════════════ */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .kpi-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .kpi-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 6px;
+    }
+
+    .kpi-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+    }
+
+    .kpi-desc {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ═══════════════════════════════════════════
+       ACTION ITEMS
+    ═══════════════════════════════════════════ */
+    .action-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .action-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 13px;
+    }
+
+    .action-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .action-dot.urgente  { background: var(--red); }
+    .action-dot.normal   { background: var(--gold); }
+    .action-dot.futuro   { background: var(--text-muted); }
+
+    .action-body { flex: 1; }
+
+    .action-label {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+
+    .action-meta {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+    }
+
+    /* ═══════════════════════════════════════════
+       PERSONA CARDS
+    ═══════════════════════════════════════════ */
+    .persona-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .persona-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .persona-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .persona-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    .persona-role {
+      font-size: 0.68rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 2px;
+    }
+
+    .persona-body {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ═══════════════════════════════════════════
+       GUIDE ACCORDION
+    ═══════════════════════════════════════════ */
+    .guide-item {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      margin-bottom: 9px;
+      overflow: hidden;
+    }
+
+    .guide-trigger {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 15px 16px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s;
+    }
+
+    .guide-trigger:hover { background: rgba(255,255,255,0.03); }
+
+    .guide-trigger.open { background: rgba(200,169,110,0.05); }
+
+    .guide-icon-wrap {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      background: var(--gold-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .guide-trigger-body { flex: 1; min-width: 0; }
+
+    .guide-trigger-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .guide-trigger-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .guide-chevron {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      transition: transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .guide-trigger.open .guide-chevron { transform: rotate(180deg); }
+
+    .guide-body {
+      display: none;
+      padding: 0 16px 16px;
+      border-top: 1px solid var(--bg4);
+      margin-top: 0;
+    }
+
+    .guide-body.open { display: block; }
+
+    .guide-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin: 14px 0 8px;
+    }
+
+    .guide-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .guide-step {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .guide-step-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.62rem;
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .guide-step p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      padding-top: 2px;
+    }
+
+    .guide-template {
+      background: var(--bg3);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 10px 12px;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* ═══════════════════════════════════════════
+       PENDING BADGE
+    ═══════════════════════════════════════════ */
+    .pending-section {
+      background: rgba(235,87,87,0.06);
+      border: 1px solid rgba(235,87,87,0.2);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .pending-title {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--red);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .pending-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pending-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.4;
+    }
+
+    .pending-item::before {
+      content: '!';
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--red-dim);
+      color: var(--red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 900;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ═══════════════════════════════════════════
+       INFO ROWS
+    ═══════════════════════════════════════════ */
+    .info-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bg4);
+      font-size: 0.82rem;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-row-label { color: var(--text-muted); flex-shrink: 0; }
+    .info-row-value { color: var(--text-2); text-align: right; font-weight: 500; }
+
+    /* ═══════════════════════════════════════════
+       ESTEIRA VISUAL
+    ═══════════════════════════════════════════ */
+    .esteira-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .esteira-col {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 12px 10px;
+    }
+
+    .esteira-day {
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .esteira-format {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-2);
+      text-align: center;
+      margin-bottom: 5px;
+    }
+
+    .esteira-theme {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* ═══════════════════════════════════════════
+       BENCHMARK CARD
+    ═══════════════════════════════════════════ */
+    .bench-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 15px;
+      margin-bottom: 10px;
+    }
+
+    .bench-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .bench-icon {
+      font-size: 1.2rem;
+      width: 32px;
+      text-align: center;
+    }
+
+    .bench-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .bench-cat {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .bench-insight {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════════
+       TOOLTIP / NOTA
+    ═══════════════════════════════════════════ */
+    .nota {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-sm);
+      padding: 11px 13px;
+      font-size: 0.76rem;
+      color: var(--text-2);
+      line-height: 1.5;
+      margin-top: 14px;
+    }
+
+    .nota strong { color: var(--gold); }
+
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header>
+  <div class="header-top">
+    <div class="logo-area">
+      <h1>Fialho Motors</h1>
+      <p>Hub de Conteudo — Vitor</p>
+    </div>
+    <div class="date-badge">
+      <div class="day-name" id="dayName">---</div>
+      <div class="day-num" id="dayNum">--</div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="hoje">Hoje</button>
+    <button class="tab-btn" data-tab="conteudo">Conteudo</button>
+    <button class="tab-btn" data-tab="brandbook">Brandbook</button>
+    <button class="tab-btn" data-tab="estrategia">Estrategia</button>
+    <button class="tab-btn" data-tab="mercado">Mercado</button>
+    <button class="tab-btn" data-tab="guias">Guias</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════════════════
+     ABA 1 — HOJE
+═══════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-hoje">
+
+  <h2 class="section-title" id="greetingTitle">Bom dia, Vitor</h2>
+  <p class="section-sub" id="todaySubtitle">Carregando data...</p>
+
+  <!-- Pendencias urgentes -->
+  <div class="pending-section" id="pendingSection">
+    <div class="pending-title">Pendencias em aberto</div>
+    <div class="pending-list">
+      <div class="pending-item">Corrigir link do endereco da loja no Instagram (linkar Google Maps)</div>
+      <div class="pending-item">Alinhar briefing de cores e logo com Jucilene</div>
+      <div class="pending-item">Produzir primeiro post "Quem Somos?" (aguardando fotos e historia da Ju)</div>
+      <div class="pending-item">Contatar profissional do tanque para filmagem</div>
+      <div class="pending-item">Repostar criativo "Avalie o especialista em GWM" com texto ajustado</div>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span>Progresso do dia</span>
+      <span id="progressText">0 / 0 concluidas</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressBar" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Checklist -->
+  <div class="checklist" id="checklist">
+
+    <div class="task-item" data-id="t1">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Postar bom dia no Instagram</div>
+        <span class="task-tag">Diario — 8h</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t2">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Responder DMs e comentarios do Instagram</div>
+        <span class="task-tag">Engajamento</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t3">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Publicar post planejado da semana (seg/qua/sex)</div>
+        <span class="task-tag">Semanal</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t4">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Verificar novo estoque — algum carro entrou hoje?</div>
+        <span class="task-tag">Estoque</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t5">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Registrar carros vendidos para post "VENDIDO"</div>
+        <span class="task-tag">Estoque</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t6">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Fazer Stories do dia (abertura + bastidor + CTA)</div>
+        <span class="task-tag">Conteudo</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t7">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Analisar alcance e interacoes do post anterior</div>
+        <span class="task-tag">Metricas</span>
+      </div>
+    </div>
+
+    <div class="task-item" data-id="t8">
+      <div class="task-check">
+        <svg width="11" height="9" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5L4.5 8.5L11 1" stroke="#0F0F0F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="task-body">
+        <div class="task-label">Planejar captacao de fotos do estoque esta semana</div>
+        <span class="task-tag">Producao</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Status da semana -->
+  <p class="block-title">Status da semana atual</p>
+  <div id="weekStatusToday"></div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABA 2 — CONTEUDO
+═══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-conteudo">
+
+  <h2 class="section-title">Conteudo</h2>
+  <p class="section-sub">Grade semanal + calendario de reels — toque no status para atualizar</p>
+
+  <!-- Esteira visual compacta -->
+  <p class="block-title">Esteira semanal</p>
+  <div class="esteira-grid">
+    <div class="esteira-col">
+      <div class="esteira-day">Segunda</div>
+      <div class="esteira-format">Carrossel</div>
+      <div class="esteira-theme">Criativo de estoque GWM com destaque visual</div>
+    </div>
+    <div class="esteira-col">
+      <div class="esteira-day">Quarta</div>
+      <div class="esteira-format">Reel</div>
+      <div class="esteira-theme">Interativo / bastidores / dia na Fialho</div>
+    </div>
+    <div class="esteira-col">
+      <div class="esteira-day">Sexta</div>
+      <div class="esteira-format">Carrossel</div>
+      <div class="esteira-theme">Dica educativa ou informativo de mercado</div>
+    </div>
+  </div>
+
+  <!-- Posts com status clicavel -->
+  <p class="block-title">Posts desta semana</p>
+  <div id="weekPostsGrid"></div>
+
+  <div class="divider"></div>
+
+  <!-- Conteudo recorrente -->
+  <p class="block-title">Conteudo recorrente (fora da esteira fixa)</p>
+
+  <div class="card">
+    <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.6;">
+      <div style="margin-bottom:10px; color:var(--text-2); font-weight:600; font-size:0.85rem;">Bom dia diario</div>
+      Todo dia cedo — 8h. Post simples com logo Fialho, data e frase. Referencia: Kaique — foto de qualidade, informacoes embaixo, limpo e nitido. Jucilene aprecia muito esse formato ("bom dia com excelencia").
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.6;">
+      <div style="margin-bottom:10px; color:var(--text-2); font-weight:600; font-size:0.85rem;">Post "VENDIDO" sempre que fechar negocio</div>
+      Foto do carro + xizinhos ou marca "VENDIDO". Simples, chama atencao. Pode gerar leads de perfil semelhante — manter anuncio vivo por 3 dias antes de pausar.
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="font-size:0.82rem; color:var(--text-muted); line-height:1.6;">
+      <div style="margin-bottom:10px; color:var(--text-2); font-weight:600; font-size:0.85rem;">Novo estoque entrou? Posta</div>
+      Nao esperar a grade. Se entrou carro hoje, Vitor capta a foto, faz o criativo em ate 24h e posta. Nao limitar apenas aos 3 posts semanais fixos.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Calendario dos 4 reels mensais -->
+  <p class="block-title">Calendario — 4 Reels do mes</p>
+  <div id="reelCalendar" style="margin-bottom:16px;"></div>
+
+  <div class="card">
+    <div class="guide-section-title" style="margin-top:0;">Temas sugeridos para os 4 reels</div>
+    <div class="phase-list" style="margin-top:8px;">
+      <ul class="phase-list">
+        <li>Semana 1 — Um dia de atendimento na Fialho (recepcao de cliente, cafezinho, negociacao)</li>
+        <li>Semana 2 — Tour pela fachada da loja ("ficou legal, a gente montou aqui")</li>
+        <li>Semana 3 — Entrega de carro para cliente (momento emocional, forte para engajamento)</li>
+        <li>Semana 4 — Video com Jucilene ou Edgar falando sobre a Fialho / GWM (rosto da marca)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="nota">
+    <strong>Nota sobre aprovacao:</strong> Antes de postar qualquer reel ou carrossel institucional, alinhar com Jucilene. Posts de estoque e bom dia podem ir direto.
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABA 3 — BRANDBOOK
+═══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-brandbook">
+
+  <h2 class="section-title">Brandbook</h2>
+  <p class="section-sub">Identidade visual e tom de voz da Fialho Motors</p>
+
+  <!-- Paleta de cores -->
+  <p class="block-title">Paleta de cores</p>
+  <div class="nota" style="margin-bottom:16px; border-color: rgba(200,169,110,0.4);">
+    ⏳ <strong>Briefing de identidade visual ainda pendente.</strong><br>
+    A paleta oficial ainda nao foi definida — esse e o primeiro item do contrato com Jucilene (agendado). Preencher aqui apos o briefing de cores e logo ser concluido.
+  </div>
+
+  <div class="nota" style="margin-bottom:22px;">
+    <strong>Logo:</strong> Letra "F" estilizada — o F da Fialho deve ser mantido sem sobrepor outros elementos. Ed pediu: "trocar o F que voce faz aqui, deixar esse F aqui, porque senao fica um pouquinho no mar." Logo em dourado sobre fundo escuro e a combinacao aprovada por Ed.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tipografia -->
+  <p class="block-title">Tipografia</p>
+  <div class="nota" style="margin-bottom:22px; border-color: rgba(200,169,110,0.4);">
+    ⏳ <strong>Fonte oficial nao definida ainda.</strong><br>
+    A tipografia sera decidida no briefing de identidade visual com Jucilene. Incluir aqui apos alinhamento.
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tom de voz -->
+  <p class="block-title">Tom de voz</p>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="guide-section-title" style="margin-top:0; margin-bottom:10px;">O que a Fialho Motors representa</div>
+    <div class="guide-text">Concessionaria GWM oficial com atendimento humanizado, presenca e excelencia. A marca nao e so vender carro — e entregar uma experiencia. "Ficou bonito mesmo, tá? Ficou presenca. Ficou do caralho." (Jucilene, ao ver um criativo alinhado com a identidade).</div>
+  </div>
+
+  <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.1em;">Palavras que usar</p>
+  <div class="word-pills">
+    <span class="word-pill yes">Excelencia</span>
+    <span class="word-pill yes">Especialista GWM</span>
+    <span class="word-pill yes">Qualidade</span>
+    <span class="word-pill yes">Bom dia</span>
+    <span class="word-pill yes">Avalie</span>
+    <span class="word-pill yes">Atendimento</span>
+    <span class="word-pill yes">Confira</span>
+    <span class="word-pill yes">Estoque</span>
+    <span class="word-pill yes">Vendido</span>
+    <span class="word-pill yes">Entrega</span>
+  </div>
+
+  <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:10px; text-transform:uppercase; letter-spacing:0.1em;">Palavras que evitar</p>
+  <div class="word-pills">
+    <span class="word-pill no">Barateado</span>
+    <span class="word-pill no">Promoção relampago</span>
+    <span class="word-pill no">Super desconto</span>
+    <span class="word-pill no">Nao perca</span>
+    <span class="word-pill no">Corra</span>
+    <span class="word-pill no">Ultimo</span>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Copy certo vs errado -->
+  <p class="block-title">Exemplos de copy</p>
+
+  <div class="copy-pair">
+    <div class="copy-box correct">
+      <div class="copy-box-label">Correto</div>
+      <p>"Avalie o especialista em GWM. Venha conhecer nosso estoque."</p>
+    </div>
+    <div class="copy-box wrong">
+      <div class="copy-box-label">Evitar</div>
+      <p>"Avalie com um dos nossos especialistas." (muito generico)</p>
+    </div>
+  </div>
+
+  <div class="copy-pair">
+    <div class="copy-box correct">
+      <div class="copy-box-label">Correto</div>
+      <p>"Bom dia com excelencia. [Data]. Fialho Motors — especialista GWM."</p>
+    </div>
+    <div class="copy-box wrong">
+      <div class="copy-box-label">Evitar</div>
+      <p>Posts poluidos com muita informacao, muito texto, espaco vago, fundo confuso.</p>
+    </div>
+  </div>
+
+  <div class="copy-pair">
+    <div class="copy-box correct">
+      <div class="copy-box-label">Correto</div>
+      <p>"VENDIDO. [Foto do carro]. Outro cliente satisfeito na Fialho Motors."</p>
+    </div>
+    <div class="copy-box wrong">
+      <div class="copy-box-label">Evitar</div>
+      <p>Criativos com muito fundo verde misturado, letras pequenas, informacoes espalhadas.</p>
+    </div>
+  </div>
+
+  <div class="nota">
+    <strong>Referencia visual aprovada por Ed e Jucilene:</strong> O estilo do Kaique — foto principal grande e de alta qualidade, informacoes do veiculo embaixo de forma sucinta, logo no canto. "Mais claro e visivel do que o mais trabalhado." Clareza ganha sobre efeito.
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABA 4 — ESTRATEGIA
+═══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-estrategia">
+
+  <h2 class="section-title">Estrategia</h2>
+  <p class="section-sub">Contrato, esteira completa, fases e proximas acoes</p>
+
+  <!-- Objetivo do contrato -->
+  <div class="card-gold" style="margin-bottom:20px;">
+    <div style="font-size:0.65rem; color:var(--gold); text-transform:uppercase; letter-spacing:0.12em; font-weight:700; margin-bottom:10px;">Objetivo do contrato</div>
+    <div style="font-size:0.88rem; color:var(--text-2); line-height:1.65;">
+      Construir presenca digital da Fialho Motors do zero — identidade visual, conteudo de estoque, reels, bom dia diario, posts de carros vendidos. Automatizar criativos com IA (Claude Code) para que Vitor so precise gestionar e postar. Meta de longo prazo: funil de vendas automatizado via WhatsApp e e-mail.
+    </div>
+  </div>
+
+  <!-- Fases -->
+  <p class="block-title">Fases do projeto</p>
+
+  <div class="phase-card">
+    <div class="phase-header">
+      <span class="phase-badge">Fase 1 — Ativa</span>
+      <span class="phase-title">Construcao da presenca</span>
+      <span class="phase-price">R$ 500/mes</span>
+    </div>
+    <ul class="phase-list">
+      <li>Captacao de fotos do estoque GWM — Vitor vai presencialmente</li>
+      <li>Criativos por veiculo entregues em ate 24h apos captacao</li>
+      <li>4 Reels mensais informativos e interativos</li>
+      <li>3 posts semanais (seg/qua/sex) + bom dia diario + carros vendidos</li>
+      <li>Identidade visual base da marca — cores, logo, estilo</li>
+      <li>Gestao do Instagram (bio, link, perfil, Google Maps)</li>
+      <li>Briefing e conceito da marca (feito com Jucilene)</li>
+      <li>Automacao de criativos via Claude Code (ferramenta de IA)</li>
+    </ul>
+  </div>
+
+  <div class="phase-card" style="opacity:0.7;">
+    <div class="phase-header">
+      <span class="phase-badge">Fase 2 — Proximo mes</span>
+      <span class="phase-title">Automacao de funil</span>
+      <span class="phase-price">R$ 1.200/mes</span>
+    </div>
+    <ul class="phase-list">
+      <li>Agente de IA integrado ao WhatsApp da Fialho — primeiro atendimento automatico</li>
+      <li>Funil de leads via e-mail (captura, nutricao, fechamento)</li>
+      <li>Dashboard de leads: de onde vieram, quanto aqueceram, onde pararam</li>
+      <li>Integracao Shopcar + Instagram + WhatsApp</li>
+      <li>Anuncios de carros vendidos mantidos vivos 3 dias para gerar leads similares</li>
+      <li>Fase ativada se Fase 1 gerar resultados — decisao de Jucilene</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- KPIs -->
+  <p class="block-title">KPIs para acompanhar</p>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">Posts / semana</div>
+      <div class="kpi-value">3+</div>
+      <div class="kpi-desc">Seg, Qua, Sex — mais eventuais</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Reels / mes</div>
+      <div class="kpi-value">4</div>
+      <div class="kpi-desc">Informativos e interativos</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Bom dia</div>
+      <div class="kpi-value">Diario</div>
+      <div class="kpi-desc">8h todos os dias uteis</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Alcance</div>
+      <div class="kpi-value">Crescimento</div>
+      <div class="kpi-desc">Meta: sair de 0 para seguidores reais</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Leads / mes</div>
+      <div class="kpi-value">Registrar</div>
+      <div class="kpi-desc">DMs e comentarios com intencao de compra</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Carros vendidos</div>
+      <div class="kpi-value">Postar</div>
+      <div class="kpi-desc">Cada venda vira um post de prova social</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Proximas acoes com responsaveis -->
+  <p class="block-title">Proximas acoes concretas</p>
+  <div class="action-list">
+    <div class="action-item">
+      <div class="action-dot urgente"></div>
+      <div class="action-body">
+        <div class="action-label">Corrigir link do endereco no Instagram (linkar Google Maps)</div>
+        <div class="action-meta">Responsavel: Vitor | Urgente</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot urgente"></div>
+      <div class="action-body">
+        <div class="action-label">Fazer briefing de cores e logo com Jucilene</div>
+        <div class="action-meta">Responsavel: Vitor + Jucilene | Esta semana</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Produzir primeiro post "Quem Somos?" — aguardando fotos e historia da Ju</div>
+        <div class="action-meta">Responsavel: Vitor | Aguardando material</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Repostar criativo "Avalie o especialista em GWM" com texto correto</div>
+        <div class="action-meta">Responsavel: Vitor | Esta semana</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Captacao de fotos do estoque atual GWM/Haval</div>
+        <div class="action-meta">Responsavel: Vitor | Combinar horario com Jucilene (9h-12h)</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Montar esteira visual do mes no formato aprovado</div>
+        <div class="action-meta">Responsavel: Vitor | Apresentar para Jucilene</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot futuro"></div>
+      <div class="action-body">
+        <div class="action-label">Filmar reel com Jucilene ou Doni no "puxadinho" quando pronto</div>
+        <div class="action-meta">Responsavel: Jucilene + Vitor | "Talvez ainda esse mes"</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot futuro"></div>
+      <div class="action-body">
+        <div class="action-label">Contactar profissional do tanque para filmagem especial</div>
+        <div class="action-meta">Responsavel: Jucilene | Em aberto</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot futuro"></div>
+      <div class="action-body">
+        <div class="action-label">Integrar Shopcar para gestao de estoque online</div>
+        <div class="action-meta">Responsavel: Jucilene envia acesso | Fase 2</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABA 5 — MERCADO
+═══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-mercado">
+
+  <h2 class="section-title">Mercado</h2>
+  <p class="section-sub">Perfil da Fialho Motors, publico-alvo e oportunidades identificadas</p>
+
+  <!-- Perfil da empresa -->
+  <p class="block-title">Perfil da Fialho Motors</p>
+  <div class="card" style="margin-bottom:20px;">
+    <div class="info-row">
+      <span class="info-row-label">Tipo</span>
+      <span class="info-row-value">Concessionaria GWM / Haval (oficial)</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Proprietaria</span>
+      <span class="info-row-value">Jucilene</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Equipe interna</span>
+      <span class="info-row-value">Ed (Edgar) + Gabriel</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Plataforma de estoque</span>
+      <span class="info-row-value">Shopcar</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Instagram</span>
+      <span class="info-row-value">Em construcao — fase inicial</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Fase</span>
+      <span class="info-row-value">Presenca digital do zero</span>
+    </div>
+    <div class="info-row">
+      <span class="info-row-label">Estagio do negocio</span>
+      <span class="info-row-value">"Loja que ta se iniciando"</span>
+    </div>
+  </div>
+
+  <!-- Personas de compra -->
+  <p class="block-title">Personas de compra de veiculo</p>
+
+  <div class="persona-card">
+    <div class="persona-header">
+      <div class="persona-avatar">👨‍💼</div>
+      <div>
+        <div class="persona-name">Comprador de SUV Premium</div>
+        <div class="persona-role">Publico principal GWM / Haval</div>
+      </div>
+    </div>
+    <div class="persona-body">
+      Faixa 30-50 anos, renda media-alta. Quer SUV moderno, bem equipado, sem pagar preco de mercado europeu. Pesquisa muito antes de decidir. A resposta rapida e o que converte — "o que precisa pra vender e a resposta." Consome Instagram, se atrai por imagens limpas de carros em alta qualidade.
+    </div>
+  </div>
+
+  <div class="persona-card">
+    <div class="persona-header">
+      <div class="persona-avatar">🔄</div>
+      <div>
+        <div class="persona-name">Permutante</div>
+        <div class="persona-role">Troca de semi-novo por novo</div>
+      </div>
+    </div>
+    <div class="persona-body">
+      Tem um carro semi-novo e quer avaliar. O criativo "Avalie o especialista em GWM" e perfeito para esse perfil. Anuncios de carros ja vendidos podem atrair leads similares — "tem carro que da muito leads, e atraves desse carro voce puxa outro carro." Manter anuncio vivo 3 dias apos venda.
+    </div>
+  </div>
+
+  <div class="persona-card">
+    <div class="persona-header">
+      <div class="persona-avatar">🌟</div>
+      <div>
+        <div class="persona-name">Aspirante ao Premium Chines</div>
+        <div class="persona-role">Mercado emergente — marca Umoda</div>
+      </div>
+    </div>
+    <div class="persona-body">
+      Publico que quer carro bonito e moderno por um preco menor que as marcas europeias. Mercado emergente de carros chineses como GWM, Haval e possivelmente Umoda (Riviera). "Carros fodas, 180 mil." Oportunidade de nicho para Fialho Motors se posicionar como especialista nesse segmento.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Concorrentes mencionados -->
+  <p class="block-title">Concorrentes e referencias mencionados</p>
+
+  <div class="bench-card">
+    <div class="bench-header">
+      <div class="bench-icon">🏎️</div>
+      <div>
+        <div class="bench-name">Porsche / Showroom oficial</div>
+        <div class="bench-cat">Referencia de marketing de luxo</div>
+      </div>
+    </div>
+    <div class="bench-insight">Jucilene mencionou que a Fialho esta producindo conteudo que "nem o showroom faz isso, nem o showroom tem um marketing desse de Sao Paulo." Ed trabalha na Porsche e traz benchmarks de la. Referencia de qualidade visual alta — foto principal grande, descricao padrao abaixo.</div>
+  </div>
+
+  <div class="bench-card">
+    <div class="bench-header">
+      <div class="bench-icon">📱</div>
+      <div>
+        <div class="bench-name">Kaique (referencia de Instagram)</div>
+        <div class="bench-cat">Benchmark de conteudo para concessionaria</div>
+      </div>
+    </div>
+    <div class="bench-insight">Aprovado por Jucilene e Ed como referencia de estilo. Formato: foto de alta qualidade do veiculo, 2-3 saltinhos de informacao embaixo, logo discreto. "Nao e poluido. E claro e visivel." Posto regularmente — segunda, terca, quarta. Presenca constante mais que post perfeito.</div>
+  </div>
+
+  <div class="bench-card">
+    <div class="bench-header">
+      <div class="bench-icon">⚙️</div>
+      <div>
+        <div class="bench-name">Cionet (concorrente de funil)</div>
+        <div class="bench-cat">Referencia negativa — o que nao fazer</div>
+      </div>
+    </div>
+    <div class="bench-insight">"E uma bosta. Ninguem usa. E caro e nao tem resultado." A Bamac paga caro por um servico de funil que nao converte. A oportunidade de Vitor: fazer um funil com IA mais efetivo, mais barato e com dashboard real. Esse e o argumento para a Fase 2 de R$1.200.</div>
+  </div>
+
+  <div class="bench-card">
+    <div class="bench-header">
+      <div class="bench-icon">🚗</div>
+      <div>
+        <div class="bench-name">Umoda / Marca chinesa emergente</div>
+        <div class="bench-cat">Oportunidade de mercado</div>
+      </div>
+    </div>
+    <div class="bench-insight">Nova marca chinesa abrindo em Anapolis — modelos a partir de R$180 mil, com um topo de linha proximo a R$300 mil. "Carros lindos, show." Riviera teve que abrir mao da B&G para abrir a Umoda. Oportunidade para Fialho se posicionar como especialista no segmento de carros chineses premium.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Oportunidades estrategicas -->
+  <p class="block-title">Oportunidades identificadas</p>
+
+  <div class="action-list">
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Anuncios de carros vendidos geram leads de perfil similar</div>
+        <div class="action-meta">Manter anuncio vivo 3 dias antes de pausar. Nao excluir imediatamente.</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Resposta rapida = venda. Instagram sem funil = lead perdido</div>
+        <div class="action-meta">Fase 2 resolve isso com agente de IA no WhatsApp.</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Gestao de estoque no Shopcar e ponto de eficiencia</div>
+        <div class="action-meta">Jucilene quer isso. Vitor recebera acesso para integrar futuramente.</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot normal"></div>
+      <div class="action-body">
+        <div class="action-label">Post "bom dia com excelencia" — simples e poderoso</div>
+        <div class="action-meta">Jucilene aprecia muito. Conteudo simples e constante supera post elaborado esporadico.</div>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-dot futuro"></div>
+      <div class="action-body">
+        <div class="action-label">Posicionamento como especialista em carros chineses premium</div>
+        <div class="action-meta">GWM/Haval + potencial Umoda. Vitor tem expertise nesse segmento.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     ABA 6 — GUIAS
+═══════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-guias">
+
+  <h2 class="section-title">Guias</h2>
+  <p class="section-sub">Manuais operacionais — toque para expandir</p>
+
+  <!-- GUIA 1: Fotografia -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">📸</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Fotografia de Veiculos</div>
+        <div class="guide-trigger-sub">Angulos, luz e enquadramento para o estoque GWM</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Preparacao antes de fotografar</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Remover cadeiras, bandeirolas esquecidas e qualquer objeto em volta do carro. Jucilene mencionou que Gabriel "esqueceu de colocar a bandeirola, esqueceu de tirar a cadeira" — checar sempre.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Limpar o carro — sem manchas de agua ou po visivel. Se estiver sujo, avisar a equipe antes de fotografar.</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Melhor horario: 8h-10h da manha ou 16h-18h. Luz natural suave, sem sombras duras.</p></div>
+
+      <div class="guide-section-title">Angulos obrigatorios por veiculo</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Frontal 3/4 lado do motorista — angulo principal do criativo. Carro ligeiramente inclinado, fundo limpo.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Lateral completa — para mostrar o perfil e o tamanho do SUV.</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Traseiro 3/4 — complementar, boa para stories.</p></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><p>Interior — painel, banco do motorista. Mostra a qualidade interna do GWM/Haval.</p></div>
+      <div class="guide-step"><div class="guide-step-num">5</div><p>Detalhe — rodas, grade frontal, logo GWM. Eleva o senso de premium.</p></div>
+
+      <div class="guide-section-title">Referencia aprovada</div>
+      <div class="guide-text">Estilo Kaique: foto principal grande e de alta qualidade, informacoes do veiculo embaixo de forma sucinta, logo no canto. "Mais claro e visivel." Fundo limpo, sem elementos concorrendo com o carro.</div>
+    </div>
+  </div>
+
+  <!-- GUIA 2: Reels -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">🎬</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Edicao de Reels</div>
+        <div class="guide-trigger-sub">Ritmo, cortes e formato para concessionaria</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Duracao e formato</div>
+      <div class="guide-text">Reels da Fialho: 30s a 60s. Vertical (9:16). Primeiros 3 segundos precisam prender — comece com o carro em movimento, uma entrega, ou Jucilene falando diretamente.</div>
+
+      <div class="guide-section-title">Estrutura dos 4 tipos de reel</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p><strong style="color:var(--text);">Um dia na Fialho:</strong> Chegada → Recepcao do cliente → Cafezinho → Negociacao → Encerramento. Tom humano e proximo.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p><strong style="color:var(--text);">Fachada / loja:</strong> Pan da fachada, interior, equipe, estoque. Mostra estrutura e profissionalismo.</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p><strong style="color:var(--text);">Entrega de carro:</strong> Momento emocional. Cliente recebendo as chaves. Alta taxa de compartilhamento.</p></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><p><strong style="color:var(--text);">Rosto da marca:</strong> Jucilene ou Ed falando 30s sobre a Fialho / GWM / um modelo especifico.</p></div>
+
+      <div class="guide-section-title">Edicao — checklist</div>
+      <div class="guide-text">Musica: instrumental leve ou trending do Instagram. Textos na tela: fonte bold, contraste alto. Corte rapido nos primeiros 10s, mais lento no meio. Logo Fialho no final. Legenda automatica ativada.</div>
+    </div>
+  </div>
+
+  <!-- GUIA 3: Bom dia -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">☀️</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Templates de Bom Dia</div>
+        <div class="guide-trigger-sub">Posts diarios de abertura — 8h todo dia util</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Formato padrao</div>
+      <div class="guide-text">Imagem: logo Fialho Motors + data + frase. Fundo escuro ou foto suave da loja. Sem poluicao visual. Referencia direta: posts do Kaique — "Segunda. Bom dia. 9 de marco." Simples, nitido, diario.</div>
+
+      <div class="guide-section-title">Templates de copy</div>
+      <div class="guide-template">
+        "Bom dia! [Dia da semana], [data]. Que seu dia seja cheio de boas realizacoes. Fialho Motors — Especialista GWM."
+      </div>
+      <div class="guide-template">
+        "Bom dia com excelencia! [Data]. A Fialho Motors te deseja um dia produtivo. Acesse nosso estoque pelo link na bio."
+      </div>
+      <div class="guide-template">
+        "Boa semana! Segunda-feira [data]. Novos carros, novas oportunidades. Fialho Motors — GWM Anapolis."
+      </div>
+
+      <div class="guide-section-title">Dica operacional</div>
+      <div class="guide-text">Preparar os bom dias com antecedencia (semana inteira de uma vez). Agendar no Meta Business Suite para postar 8h automaticamente. Isso libera Vitor para focar na captacao de fotos.</div>
+    </div>
+  </div>
+
+  <!-- GUIA 4: Copy e tom -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">✍️</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Templates de Copy por Formato</div>
+        <div class="guide-trigger-sub">Textos prontos para cada tipo de post</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Carrossel de estoque</div>
+      <div class="guide-template">
+        "GWM [Modelo] [ano]. [Km] km | [Cor] | [Cambio]. Um SUV que entrega conforto, tecnologia e estilo. Avalie seu veiculo conosco. Link na bio ou WhatsApp."
+      </div>
+
+      <div class="guide-section-title">Post VENDIDO</div>
+      <div class="guide-template">
+        "VENDIDO. Mais um cliente Fialho Motors realizado. Voce tambem pode ser o proximo — acesse nosso estoque pelo link na bio."
+      </div>
+
+      <div class="guide-section-title">Post educativo / dica (sexta)</div>
+      <div class="guide-template">
+        "Voce sabia que [dica pratica]? Manter [habito] pode [beneficio concreto] no seu veiculo. Na Fialho Motors, a gente cuida de tudo pra voce. [CTA]"
+      </div>
+
+      <div class="guide-section-title">Criativo "Avalie seu veiculo"</div>
+      <div class="guide-template">
+        "Avalie o especialista em GWM. Traga seu seminovo e descubra quanto ele vale. Atendimento personalizado na Fialho Motors."
+      </div>
+
+      <div class="guide-section-title">Quem somos (primeiro post)</div>
+      <div class="guide-template">
+        "[Foto da Jucilene/equipe] A Fialho Motors nasceu do sonho de [historia breve]. Hoje somos concessionaria oficial GWM em [cidade], comprometidos com excelencia no atendimento. Quer conhecer nossa historia? Vem nos visitar."
+      </div>
+    </div>
+  </div>
+
+  <!-- GUIA 5: Processo de aprovacao -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">✅</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Processo de Aprovacao com Jucilene</div>
+        <div class="guide-trigger-sub">O que vai direto e o que precisa de ok dela</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Posta direto — sem precisar de aprovacao</div>
+      <div class="guide-text">Bom dia diario (formato padrao ja aprovado). Post de carro vendido (foto + "VENDIDO"). Post de novo estoque (criativo padrao GWM). Stories de bastidores simples.</div>
+
+      <div class="guide-section-title">Precisa de aprovacao da Jucilene</div>
+      <div class="guide-text">Reels com rosto da Jucilene ou Edgar. Post "Quem somos?" e qualquer institucional. Qualquer criativo com preco, condicoes de pagamento ou oferta. Primeira postagem de um modelo novo de carro.</div>
+
+      <div class="guide-section-title">Canal de aprovacao</div>
+      <div class="guide-text">WhatsApp. Enviar criativo finalizado + texto da legenda. Aguardar ok antes de agendar. "Se voce conseguir fazer isso hoje pra mim, hoje eu ja mexo no chat e amanha eu ja tento afunilar."</div>
+
+      <div class="guide-section-title">Prazo de retorno esperado</div>
+      <div class="guide-text">Jucilene e direta e rapida. Se nao responder em 2h, seguir com o bom dia padrao e reenviar o criativo no dia seguinte.</div>
+    </div>
+  </div>
+
+  <!-- GUIA 6: Fluxo semanal -->
+  <div class="guide-item">
+    <button class="guide-trigger" onclick="toggleGuide(this)">
+      <div class="guide-icon-wrap">📋</div>
+      <div class="guide-trigger-body">
+        <div class="guide-trigger-title">Fluxo de Trabalho Semanal</div>
+        <div class="guide-trigger-sub">Segunda a sexta — o que fazer em cada dia</div>
+      </div>
+      <span class="guide-chevron">▼</span>
+    </button>
+    <div class="guide-body">
+      <div class="guide-section-title">Segunda-feira</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Postar bom dia 8h.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Publicar carrossel criativo do estoque GWM (post da semana #1).</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Verificar se houve vendas ou novos carros no final de semana — postar se houver.</p></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><p>Planejar captacao de fotos da semana com Jucilene (combinar horario).</p></div>
+
+      <div class="guide-section-title">Terca-feira</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Postar bom dia 8h.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Ir a Fialho Motors para captacao de fotos do estoque (se combinado).</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Editar e preparar criativos do estoque captado (entrega em ate 24h).</p></div>
+
+      <div class="guide-section-title">Quarta-feira</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Postar bom dia 8h.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Publicar Reel semanal (interativo / bastidores / um dia na Fialho).</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Responder DMs — quarta costuma ter pico de mensagens.</p></div>
+
+      <div class="guide-section-title">Quinta-feira</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Postar bom dia 8h.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Preparar post de sexta (dica / informativo) — pesquisar tema e montar criativo.</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Analisar metricas da semana (alcance, seguidores novos, DMs).</p></div>
+
+      <div class="guide-section-title">Sexta-feira</div>
+      <div class="guide-step"><div class="guide-step-num">1</div><p>Postar bom dia 8h.</p></div>
+      <div class="guide-step"><div class="guide-step-num">2</div><p>Publicar post educativo / dica da semana.</p></div>
+      <div class="guide-step"><div class="guide-step-num">3</div><p>Preparar bom dias do final de semana com antecedencia.</p></div>
+      <div class="guide-step"><div class="guide-step-num">4</div><p>Relatorio rapido para Jucilene: posts da semana, alcance, observacoes.</p></div>
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<script>
+/* ═══════════════════════════════════════════
+   DADOS — POSTS DA SEMANA
+   Semana de referencia: 10 a 14 de marco 2026
+═══════════════════════════════════════════ */
+const WEEK_POSTS = [
+  {
+    id: 'p1',
+    day: 'Segunda',
+    dayShort: 'Seg',
+    theme: 'Criativo',
+    title: 'Destaque de Estoque GWM',
+    format: 'Carrossel',
+    desc: 'Fotos do estoque GWM com copy de destaque visual. Foto principal grande, informacoes do modelo embaixo, logo Fialho no canto. Estilo Kaique — limpo e nitido.',
+    status: 'pendente'
+  },
+  {
+    id: 'p2',
+    day: 'Quarta',
+    dayShort: 'Qua',
+    theme: 'Interativo',
+    title: 'Um Dia na Fialho',
+    format: 'Reel',
+    desc: 'Video mostrando recepcao de cliente, cafezinho, negociacao e entrega. Tom humano e proximo. Pode ser filmado quando houver cliente na loja.',
+    status: 'pendente'
+  },
+  {
+    id: 'p3',
+    day: 'Sexta',
+    dayShort: 'Sex',
+    theme: 'Educativo',
+    title: 'Dica da Semana',
+    format: 'Carrossel',
+    desc: 'Dica pratica: cuidados com o carro, como manter valorizacao do seminovo, ou informativo de mercado. Conteudo pequeno — "so pra tar la", mas constante.',
+    status: 'pendente'
+  }
+];
+
+/* ═══════════════════════════════════════════
+   STORAGE DE STATUS DOS POSTS
+═══════════════════════════════════════════ */
+const WEEK_KEY = 'fialho-week-' + getWeekId();
+
+function getWeekId() {
+  const d = new Date();
+  const jan1 = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil(((d - jan1) / 86400000 + jan1.getDay() + 1) / 7);
+  return d.getFullYear() + '-W' + week;
+}
+
+function loadWeekStatus() {
+  try { return JSON.parse(localStorage.getItem(WEEK_KEY) || '{}'); } catch { return {}; }
+}
+
+function saveWeekStatus(status) {
+  localStorage.setItem(WEEK_KEY, JSON.stringify(status));
+}
+
+/* ═══════════════════════════════════════════
+   RENDER POSTS GRADE
+═══════════════════════════════════════════ */
+const STATUS_MAP = {
+  pendente:  { cls: 'pendente',  label: 'Pendente' },
+  producao:  { cls: 'producao',  label: 'Em producao' },
+  publicado: { cls: 'publicado', label: 'Publicado' }
+};
+
+const STATUS_ORDER = ['pendente', 'producao', 'publicado'];
+
+function renderWeekPosts(containerId, compact) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  const saved = loadWeekStatus();
+  let html = '';
+
+  WEEK_POSTS.forEach(post => {
+    const curStatus = saved[post.id] || post.status;
+    const s = STATUS_MAP[curStatus];
+
+    if (compact) {
+      html += `
+        <div style="display:flex;align-items:center;gap:12px;background:var(--bg2);border:1px solid var(--bg4);border-radius:10px;padding:11px 13px;margin-bottom:8px;">
+          <div style="flex:1;min-width:0;">
+            <div style="font-size:0.65rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2px;">${post.dayShort} — ${post.theme}</div>
+            <div style="font-size:0.85rem;font-weight:500;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${post.title}</div>
+          </div>
+          <button class="status-pill ${s.cls}" onclick="cyclePost('${post.id}', '${containerId}')">${s.label}</button>
+        </div>`;
+    } else {
+      html += `
+        <div class="week-section">
+          <div class="week-day-label">${post.day}</div>
+          <div class="post-card">
+            <div class="post-card-header">
+              <div>
+                <div class="post-format">${post.format} &middot; ${post.theme}</div>
+                <div class="post-title">${post.title}</div>
+              </div>
+              <button class="status-pill ${s.cls}" onclick="cyclePost('${post.id}', '${containerId}')">${s.label}</button>
+            </div>
+            <div class="post-desc">${post.desc}</div>
+          </div>
+        </div>`;
+    }
+  });
+
+  el.innerHTML = html;
+}
+
+function cyclePost(postId, containerId) {
+  const saved = loadWeekStatus();
+  const cur = saved[postId] || 'pendente';
+  const idx = STATUS_ORDER.indexOf(cur);
+  saved[postId] = STATUS_ORDER[(idx + 1) % STATUS_ORDER.length];
+  saveWeekStatus(saved);
+  renderWeekPosts(containerId, containerId === 'weekStatusToday');
+  // sync the other container too
+  const other = containerId === 'weekStatusToday' ? 'weekPostsGrid' : 'weekStatusToday';
+  renderWeekPosts(other, other === 'weekStatusToday');
+}
+
+/* ═══════════════════════════════════════════
+   RENDER CALENDARIO DOS REELS
+═══════════════════════════════════════════ */
+function renderReelCalendar() {
+  const el = document.getElementById('reelCalendar');
+  if (!el) return;
+
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const today = now.getDate();
+
+  // Dias do mes
+  const firstDay = new Date(year, month, 1).getDay(); // 0=dom
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  // Calcular quartas-feiras do mes (dias dos reels)
+  const wednesdays = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    if (new Date(year, month, d).getDay() === 3) wednesdays.push(d);
+  }
+
+  const MONTHS_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const DAYS_SHORT = ['D','S','T','Q','Q','S','S'];
+
+  let html = `<div style="font-size:0.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;text-align:center;">${MONTHS_PT[month]} ${year}</div>`;
+
+  // Headers
+  html += '<div class="cal-strip">';
+  DAYS_SHORT.forEach(d => {
+    html += `<div class="cal-day-header">${d}</div>`;
+  });
+  html += '</div>';
+
+  // Grid
+  html += '<div class="cal-strip">';
+  // Padding inicial
+  for (let i = 0; i < firstDay; i++) {
+    html += '<div class="cal-day"></div>';
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = d === today;
+    const isReel = wednesdays.includes(d);
+    // Posts: seg, qua, sex
+    const dow = new Date(year, month, d).getDay();
+    const isPost = dow === 1 || dow === 3 || dow === 5;
+    let cls = 'cal-day';
+    if (isReel) cls += ' has-reel';
+    else if (isPost) cls += ' has-post';
+    if (isToday) cls += ' today';
+    html += `<div class="${cls}">${d}</div>`;
+  }
+  html += '</div>';
+
+  // Legenda
+  html += `<div style="display:flex;gap:14px;font-size:0.68rem;color:var(--text-muted);margin-top:10px;flex-wrap:wrap;">
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:var(--gold-dim);border:1px solid var(--gold-border);display:inline-block;"></span> Post fixo (Seg/Qua/Sex)</span>
+    <span style="display:flex;align-items:center;gap:5px;"><span style="width:10px;height:10px;border-radius:2px;background:rgba(111,207,151,0.1);border:1px solid rgba(111,207,151,0.25);display:inline-block;"></span> Reel mensal (${wednesdays.length == 4 ? '4 quartas' : wednesdays.length + ' quartas'})</span>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════
+   DATA E SAUDACAO
+═══════════════════════════════════════════ */
+const DAYS_PT = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
+const MONTHS_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+
+function initDate() {
+  const now = new Date();
+  const h = now.getHours();
+  const greeting = h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite';
+
+  const el = document.getElementById('greetingTitle');
+  if (el) el.textContent = `${greeting}, Vitor`;
+
+  const sub = document.getElementById('todaySubtitle');
+  if (sub) sub.textContent = `${DAYS_PT[now.getDay()]}, ${now.getDate()} de ${MONTHS_PT[now.getMonth()]} de ${now.getFullYear()}`;
+
+  const dn = document.getElementById('dayName');
+  if (dn) dn.textContent = DAYS_PT[now.getDay()].slice(0,3).toUpperCase();
+
+  const dnum = document.getElementById('dayNum');
+  if (dnum) dnum.textContent = now.getDate();
+}
+
+/* ═══════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = document.getElementById('tab-' + btn.dataset.tab);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+/* ═══════════════════════════════════════════
+   CHECKLIST
+═══════════════════════════════════════════ */
+const TASK_KEY = 'fialho-tasks-' + new Date().toDateString();
+
+function loadTasks() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(TASK_KEY) || '[]');
+    saved.forEach(id => {
+      const el = document.querySelector(`[data-id="${id}"]`);
+      if (el) el.classList.add('done');
+    });
+  } catch {}
+  updateProgress();
+}
+
+function saveTasks() {
+  const done = [...document.querySelectorAll('.task-item.done')].map(el => el.dataset.id);
+  localStorage.setItem(TASK_KEY, JSON.stringify(done));
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.task-item').length;
+  const done = document.querySelectorAll('.task-item.done').length;
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const bar = document.getElementById('progressBar');
+  const txt = document.getElementById('progressText');
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = `${done} / ${total} concluidas`;
+}
+
+document.querySelectorAll('.task-item').forEach(item => {
+  item.addEventListener('click', () => {
+    item.classList.toggle('done');
+    saveTasks();
+    updateProgress();
+  });
+});
+
+/* ═══════════════════════════════════════════
+   GUIDE ACCORDION
+═══════════════════════════════════════════ */
+function toggleGuide(trigger) {
+  const body = trigger.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+
+  // Fecha todos
+  document.querySelectorAll('.guide-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.guide-trigger').forEach(t => t.classList.remove('open'));
+
+  // Abre o clicado (se estava fechado)
+  if (!isOpen) {
+    body.classList.add('open');
+    trigger.classList.add('open');
+  }
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+initDate();
+loadTasks();
+renderWeekPosts('weekStatusToday', true);
+renderWeekPosts('weekPostsGrid', false);
+renderReelCalendar();
+</script>
+
+</body>
+</html>
