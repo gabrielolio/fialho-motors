@@ -1,0 +1,25 @@
+{
+  "semana": "01",
+  "periodo": "10 a 16 de março de 2025",
+  "status": "Em andamento",
+  "posts": [
+    {
+      "titulo": "Post exemplo 1",
+      "data": "12/03",
+      "formato": "Reels",
+      "status": "Publicado"
+    },
+    {
+      "titulo": "Post exemplo 2",
+      "data": "14/03",
+      "formato": "Carrossel",
+      "status": "Agendado"
+    }
+  ],
+  "metricas": {
+    "alcance": "0",
+    "engajamento": "0%",
+    "seguidores_ganhos": "0"
+  },
+  "observacoes": "Primeira semana de operação."
+}

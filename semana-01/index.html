@@ -2,61 +2,410 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Semana 01 — Fialho Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg: #0F0F0F;
-      --gold: #C8A96E;
-      --text: #F0EDE8;
-      --text-muted: #7A7570;
+      --bg:           #0F0F0F;
+      --bg2:          #1A1A1A;
+      --bg3:          #222222;
+      --bg4:          #2A2A2A;
+      --gold:         #C8A96E;
+      --gold-light:   #DFC08A;
+      --gold-dim:     rgba(200,169,110,0.10);
+      --gold-border:  rgba(200,169,110,0.22);
+      --text:         #F0EDE8;
+      --text-2:       #C8C2BB;
+      --text-muted:   #7A7570;
+      --green:        #6FCF97;
+      --green-dim:    rgba(111,207,151,0.12);
+      --amber:        #F2C94C;
+      --amber-dim:    rgba(242,201,76,0.12);
+      --blue:         #56CCF2;
+      --blue-dim:     rgba(86,204,242,0.12);
+      --red:          #EB5757;
+      --red-dim:      rgba(235,87,87,0.12);
+      --radius:       12px;
+      --radius-sm:    8px;
     }
-    body {
+
+    html, body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Raleway', sans-serif;
+      font-weight: 400;
       min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      padding: 32px;
-      text-align: center;
+      -webkit-tap-highlight-color: transparent;
     }
-    .label {
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+    /* ── HEADER ─────────────────────────────── */
+    header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 20px 20px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .header-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--gold);
+      margin-bottom: 4px;
     }
-    h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
+
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
       color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    p {
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      max-width: 320px;
-    }
-    .badge {
-      display: inline-block;
-      background: rgba(200,169,110,0.12);
-      border: 1px solid rgba(200,169,110,0.3);
-      color: var(--gold);
-      font-size: 0.75rem;
-      padding: 4px 12px;
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
       border-radius: 20px;
-      letter-spacing: 0.05em;
+    }
+    .status-pill::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .pill-andamento { background: var(--amber-dim); color: var(--amber); }
+    .pill-concluida { background: var(--green-dim); color: var(--green); }
+    .pill-planejada { background: var(--blue-dim);  color: var(--blue); }
+
+    .header-periodo {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* ── LAYOUT ─────────────────────────────── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* ── SECTION LABEL ───────────────────────── */
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── MÉTRICAS ────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .metric-card {
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      padding: 16px 14px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .metric-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── TABELA DE POSTS ─────────────────────── */
+    .posts-table {
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .posts-table-header {
+      display: grid;
+      grid-template-columns: 1fr 56px 88px 90px;
+      gap: 0;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .post-row {
+      display: grid;
+      grid-template-columns: 1fr 56px 88px 90px;
+      gap: 0;
+      padding: 13px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      align-items: center;
+      transition: background 0.15s;
+    }
+    .post-row:last-child { border-bottom: none; }
+    .post-row:hover { background: rgba(255,255,255,0.02); }
+
+    .post-titulo {
+      font-size: 0.85rem;
+      color: var(--text);
+      font-weight: 500;
+      padding-right: 8px;
+    }
+
+    .post-data {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .post-formato {
+      font-size: 0.75rem;
+      color: var(--text-2);
+    }
+
+    .post-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+    .post-status::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+    .s-publicado  { color: var(--green); }
+    .s-agendado   { color: var(--blue); }
+    .s-producao   { color: var(--amber); }
+    .s-cancelado  { color: var(--red); }
+    .s-pendente   { color: var(--text-muted); }
+
+    /* ── OBSERVAÇÕES ─────────────────────────── */
+    .obs-card {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 16px;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      line-height: 1.6;
+    }
+
+    /* ── BACK LINK ───────────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--gold); }
+    .back-link svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ── LOADING / ERROR ─────────────────────── */
+    #loading, #error {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    #error { color: var(--red); }
+
+    /* ── EMPTY STATE ─────────────────────────── */
+    .empty {
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.82rem;
     }
   </style>
 </head>
 <body>
-  <span class="label">Fialho Motors · GWM</span>
-  <h1>Semana 01</h1>
-  <span class="badge">Em breve</span>
-  <p>Relatório semanal em preparação. Atualizado automaticamente via JSON.</p>
+
+  <div id="loading">Carregando…</div>
+  <div id="error" style="display:none"></div>
+
+  <div id="app" style="display:none">
+    <header>
+      <div class="header-eyebrow">Fialho Motors · GWM</div>
+      <div class="header-title">
+        Semana <span id="h-semana"></span>
+        <span id="h-status-pill" class="status-pill"></span>
+      </div>
+      <div class="header-periodo" id="h-periodo"></div>
+    </header>
+
+    <main>
+      <a href="../" class="back-link">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 12L6 8l4-4"/>
+        </svg>
+        Voltar ao hub
+      </a>
+
+      <!-- Métricas -->
+      <section>
+        <div class="section-label">Métricas da semana</div>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value" id="m-alcance">—</div>
+            <div class="metric-label">Alcance</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="m-engajamento">—</div>
+            <div class="metric-label">Engajamento</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value" id="m-seguidores">—</div>
+            <div class="metric-label">Seg. ganhos</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Posts -->
+      <section>
+        <div class="section-label">Posts da semana</div>
+        <div class="posts-table">
+          <div class="posts-table-header">
+            <span>Título</span>
+            <span>Data</span>
+            <span>Formato</span>
+            <span>Status</span>
+          </div>
+          <div id="posts-body"></div>
+        </div>
+      </section>
+
+      <!-- Observações -->
+      <section id="obs-section" style="display:none">
+        <div class="section-label">Observações</div>
+        <div class="obs-card" id="obs-text"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const statusMap = {
+      publicado:  { cls: 's-publicado',  label: 'Publicado'  },
+      agendado:   { cls: 's-agendado',   label: 'Agendado'   },
+      producao:   { cls: 's-producao',   label: 'Em produção'},
+      cancelado:  { cls: 's-cancelado',  label: 'Cancelado'  },
+      pendente:   { cls: 's-pendente',   label: 'Pendente'   },
+    };
+
+    const semanaStatusMap = {
+      'em andamento': { cls: 'pill-andamento', label: 'Em andamento' },
+      'concluida':    { cls: 'pill-concluida', label: 'Concluída'    },
+      'concluída':    { cls: 'pill-concluida', label: 'Concluída'    },
+      'planejada':    { cls: 'pill-planejada', label: 'Planejada'    },
+    };
+
+    function resolveStatusPost(raw) {
+      const key = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+      return statusMap[key] || { cls: 's-pendente', label: raw };
+    }
+
+    function resolveStatusSemana(raw) {
+      const key = raw.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' ').trim();
+      return semanaStatusMap[key] || { cls: 'pill-andamento', label: raw };
+    }
+
+    fetch('dados.json')
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(d => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+
+        // Header
+        document.getElementById('h-semana').textContent = d.semana;
+        document.getElementById('h-periodo').textContent = d.periodo;
+
+        const sInfo = resolveStatusSemana(d.status || '');
+        const pill = document.getElementById('h-status-pill');
+        pill.textContent = sInfo.label;
+        pill.classList.add(sInfo.cls);
+
+        // Métricas
+        document.getElementById('m-alcance').textContent     = d.metricas?.alcance           || '—';
+        document.getElementById('m-engajamento').textContent = d.metricas?.engajamento        || '—';
+        document.getElementById('m-seguidores').textContent  = d.metricas?.seguidores_ganhos  || '—';
+
+        // Posts
+        const body = document.getElementById('posts-body');
+        if (!d.posts || d.posts.length === 0) {
+          body.innerHTML = '<div class="empty">Nenhum post registrado.</div>';
+        } else {
+          body.innerHTML = d.posts.map(p => {
+            const ps = resolveStatusPost(p.status || 'pendente');
+            return `
+              <div class="post-row">
+                <span class="post-titulo">${p.titulo}</span>
+                <span class="post-data">${p.data}</span>
+                <span class="post-formato">${p.formato}</span>
+                <span class="post-status ${ps.cls}">${ps.label}</span>
+              </div>`;
+          }).join('');
+        }
+
+        // Observações
+        if (d.observacoes) {
+          document.getElementById('obs-section').style.display = '';
+          document.getElementById('obs-text').textContent = d.observacoes;
+        }
+      })
+      .catch(err => {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('error').style.display = '';
+        document.getElementById('error').textContent = 'Erro ao carregar dados: ' + err.message;
+      });
+  </script>
 </body>
 </html>
