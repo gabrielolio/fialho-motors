@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Editor de Semana — Fialho Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F0F0F;
+      --bg2:          #1A1A1A;
+      --bg3:          #222222;
+      --bg4:          #2A2A2A;
+      --gold:         #C8A96E;
+      --gold-light:   #DFC08A;
+      --gold-dim:     rgba(200,169,110,0.10);
+      --gold-border:  rgba(200,169,110,0.28);
+      --text:         #F0EDE8;
+      --text-2:       #C8C2BB;
+      --text-muted:   #7A7570;
+      --green:        #6FCF97;
+      --green-dim:    rgba(111,207,151,0.15);
+      --green-border: rgba(111,207,151,0.3);
+      --amber:        #F2C94C;
+      --amber-dim:    rgba(242,201,76,0.12);
+      --red:          #EB5757;
+      --red-dim:      rgba(235,87,87,0.15);
+      --red-border:   rgba(235,87,87,0.3);
+      --radius:       12px;
+      --radius-sm:    8px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      min-height: 100dvh;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+    /* ── HEADER ─────────────────────────── */
+    header {
+      background: var(--bg);
+      border-bottom: 1px solid var(--gold-border);
+      padding: 20px 20px 18px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .header-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    /* ── LAYOUT ─────────────────────────── */
+    main {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 24px 16px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* ── CARD ────────────────────────────── */
+    .card {
+      background: var(--bg2);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+    }
+    .card-title {
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* ── FORM ELEMENTS ───────────────────── */
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field + .field { margin-top: 14px; }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.04em;
+    }
+
+    input, select, textarea {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.9rem;
+      padding: 10px 12px;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--gold-border);
+    }
+    input[type="password"] { letter-spacing: 0.08em; }
+    textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237A7570' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+      cursor: pointer;
+    }
+
+    /* ── GRID 2 COLS ─────────────────────── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── POSTS ───────────────────────────── */
+    #posts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-row {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+    }
+
+    .post-row-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: -2px;
+    }
+
+    .post-num {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .btn-remove {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 2px 4px;
+      font-size: 1rem;
+      line-height: 1;
+      border-radius: 4px;
+      transition: color 0.15s;
+    }
+    .btn-remove:hover { color: var(--red); }
+
+    .post-fields {
+      display: grid;
+      grid-template-columns: 1fr 64px;
+      gap: 8px;
+    }
+
+    .post-fields-row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* ── BUTTONS ─────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      padding: 10px 16px;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    .btn-gold {
+      background: var(--gold);
+      color: #0F0F0F;
+    }
+    .btn-gold:not(:disabled):hover { background: var(--gold-light); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+    }
+    .btn-outline:not(:disabled):hover { background: var(--gold-dim); }
+
+    .btn-ghost {
+      background: var(--bg3);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: var(--text-2);
+    }
+    .btn-ghost:not(:disabled):hover { background: var(--bg4); }
+
+    .btn-full { width: 100%; }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* ── FEEDBACK ────────────────────────── */
+    #feedback {
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      display: none;
+    }
+    #feedback.success {
+      background: var(--green-dim);
+      border: 1px solid var(--green-border);
+      color: var(--green);
+      display: block;
+    }
+    #feedback.error {
+      background: var(--red-dim);
+      border: 1px solid var(--red-border);
+      color: var(--red);
+      display: block;
+    }
+    #feedback.loading {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      color: var(--gold);
+      display: block;
+    }
+
+    /* ── TOKEN WARNING ───────────────────── */
+    .token-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+
+    /* ── BACK LINK ───────────────────────── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .back-link:hover { color: var(--gold); }
+
+    /* ── SPINNER ─────────────────────────── */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(200,169,110,0.3);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">Fialho Motors · GWM</div>
+  <div class="header-title">Editor de Semana</div>
+</header>
+
+<main>
+
+  <a href="../" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12L6 8l4-4"/></svg>
+    Voltar ao hub
+  </a>
+
+  <!-- Token -->
+  <div class="card">
+    <div class="card-title">Autenticação</div>
+    <div class="field">
+      <label for="token">Token GitHub</label>
+      <input type="password" id="token" placeholder="github_pat_..." autocomplete="off" />
+      <span class="token-hint">Cole seu token aqui antes de carregar ou salvar. Ele não é armazenado em lugar nenhum.</span>
+    </div>
+  </div>
+
+  <!-- Semana + controles -->
+  <div class="card">
+    <div class="card-title">Semana</div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="semana-num">Número</label>
+        <select id="semana-num">
+          <option value="01">Semana 01</option>
+          <option value="02">Semana 02</option>
+          <option value="03">Semana 03</option>
+          <option value="04">Semana 04</option>
+          <option value="05">Semana 05</option>
+          <option value="06">Semana 06</option>
+          <option value="07">Semana 07</option>
+          <option value="08">Semana 08</option>
+          <option value="09">Semana 09</option>
+          <option value="10">Semana 10</option>
+          <option value="11">Semana 11</option>
+          <option value="12">Semana 12</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="semana-status">Status</label>
+        <select id="semana-status">
+          <option value="Em andamento">Em andamento</option>
+          <option value="Concluída">Concluída</option>
+          <option value="Planejada">Planejada</option>
+        </select>
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="semana-periodo">Período</label>
+      <input type="text" id="semana-periodo" placeholder="ex: 10 a 16 de março de 2025" />
+    </div>
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn btn-outline" id="btn-load">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v6m0 0l-2.5-2.5M8 9l2.5-2.5"/><path d="M3 12h10"/></svg>
+        Carregar semana
+      </button>
+    </div>
+  </div>
+
+  <!-- Posts -->
+  <div class="card">
+    <div class="card-title">Posts</div>
+    <div id="posts-container"></div>
+    <button class="btn btn-ghost" id="btn-add-post" style="margin-top:12px;width:100%">
+      + Adicionar post
+    </button>
+  </div>
+
+  <!-- Métricas -->
+  <div class="card">
+    <div class="card-title">Métricas</div>
+    <div class="grid-2">
+      <div class="field">
+        <label for="m-alcance">Alcance</label>
+        <input type="text" id="m-alcance" placeholder="ex: 1.200" />
+      </div>
+      <div class="field">
+        <label for="m-engajamento">Engajamento</label>
+        <input type="text" id="m-engajamento" placeholder="ex: 4,5%" />
+      </div>
+    </div>
+    <div class="field" style="margin-top:14px">
+      <label for="m-seguidores">Seguidores ganhos</label>
+      <input type="text" id="m-seguidores" placeholder="ex: 12" />
+    </div>
+  </div>
+
+  <!-- Observações -->
+  <div class="card">
+    <div class="card-title">Observações</div>
+    <div class="field">
+      <textarea id="observacoes" rows="3" placeholder="Anotações livres sobre a semana…"></textarea>
+    </div>
+  </div>
+
+  <!-- Feedback -->
+  <div id="feedback"></div>
+
+  <!-- Salvar -->
+  <button class="btn btn-gold btn-full" id="btn-save" style="padding:14px">
+    Salvar semana
+  </button>
+
+</main>
+
+<script>
+  const OWNER = 'gabrielolio';
+  const REPO  = 'fialho-motors';
+
+  // ── UTILS ────────────────────────────────────────
+  function toBase64(str) {
+    // suporte UTF-8
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+
+  function fromBase64(b64) {
+    return decodeURIComponent(escape(atob(b64)));
+  }
+
+  function getToken() {
+    return document.getElementById('token').value.trim();
+  }
+
+  function getSemana() {
+    return document.getElementById('semana-num').value;
+  }
+
+  function apiPath(semana) {
+    return `semana-${semana}/dados.json`;
+  }
+
+  function setFeedback(type, msg) {
+    const el = document.getElementById('feedback');
+    el.className = type;
+    el.innerHTML = msg;
+  }
+
+  function clearFeedback() {
+    const el = document.getElementById('feedback');
+    el.className = '';
+    el.style.display = 'none';
+  }
+
+  // ── POSTS ────────────────────────────────────────
+  let postCount = 0;
+
+  function addPost(data = {}) {
+    postCount++;
+    const idx = postCount;
+    const container = document.getElementById('posts-container');
+    const div = document.createElement('div');
+    div.className = 'post-row';
+    div.dataset.postIdx = idx;
+    div.innerHTML = `
+      <div class="post-row-header">
+        <span class="post-num">Post ${String(container.querySelectorAll('.post-row').length + 1).padStart(2,'0')}</span>
+        <button class="btn-remove" title="Remover" onclick="removePost(this)">✕</button>
+      </div>
+      <div class="post-fields">
+        <div class="field">
+          <label>Título</label>
+          <input type="text" class="post-titulo" value="${data.titulo || ''}" placeholder="Título do post" />
+        </div>
+        <div class="field">
+          <label>Data</label>
+          <input type="text" class="post-data" value="${data.data || ''}" placeholder="12/03" />
+        </div>
+      </div>
+      <div class="post-fields-row2">
+        <div class="field">
+          <label>Formato</label>
+          <select class="post-formato">
+            <option value="Reels"    ${data.formato==='Reels'    ?'selected':''}>Reels</option>
+            <option value="Carrossel"${data.formato==='Carrossel'?'selected':''}>Carrossel</option>
+            <option value="Story"    ${data.formato==='Story'    ?'selected':''}>Story</option>
+            <option value="Feed"     ${data.formato==='Feed'     ?'selected':''}>Feed</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select class="post-status">
+            <option value="Publicado"   ${data.status==='Publicado'   ?'selected':''}>Publicado</option>
+            <option value="Agendado"    ${data.status==='Agendado'    ?'selected':''}>Agendado</option>
+            <option value="Em produção" ${data.status==='Em produção' ?'selected':''}>Em produção</option>
+            <option value="Pendente"    ${data.status==='Pendente'    ?'selected':''}>Pendente</option>
+            <option value="Cancelado"   ${data.status==='Cancelado'   ?'selected':''}>Cancelado</option>
+          </select>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+    renumberPosts();
+  }
+
+  function removePost(btn) {
+    btn.closest('.post-row').remove();
+    renumberPosts();
+  }
+
+  function renumberPosts() {
+    document.querySelectorAll('.post-row').forEach((row, i) => {
+      row.querySelector('.post-num').textContent = `Post ${String(i + 1).padStart(2,'0')}`;
+    });
+  }
+
+  function collectPosts() {
+    return Array.from(document.querySelectorAll('.post-row')).map(row => ({
+      titulo:  row.querySelector('.post-titulo').value.trim(),
+      data:    row.querySelector('.post-data').value.trim(),
+      formato: row.querySelector('.post-formato').value,
+      status:  row.querySelector('.post-status').value,
+    }));
+  }
+
+  function clearPosts() {
+    document.getElementById('posts-container').innerHTML = '';
+    postCount = 0;
+  }
+
+  // ── LOAD ─────────────────────────────────────────
+  document.getElementById('btn-load').addEventListener('click', async () => {
+    const token = getToken();
+    if (!token) { setFeedback('error', '⚠️ Cole seu token GitHub antes de carregar.'); return; }
+
+    const semana = getSemana();
+    setFeedback('loading', '<span class="spinner"></span>&nbsp; Carregando semana ' + semana + '…');
+    document.getElementById('btn-load').disabled = true;
+
+    try {
+      const res = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${apiPath(semana)}`,
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+      );
+
+      if (res.status === 404) {
+        clearFeedback();
+        clearPosts();
+        document.getElementById('semana-num').value     = semana;
+        document.getElementById('semana-periodo').value = '';
+        document.getElementById('semana-status').value  = 'Planejada';
+        document.getElementById('m-alcance').value      = '0';
+        document.getElementById('m-engajamento').value  = '0%';
+        document.getElementById('m-seguidores').value   = '0';
+        document.getElementById('observacoes').value    = '';
+        addPost();
+        setFeedback('loading', 'ℹ️ Semana ' + semana + ' ainda não existe no repositório. Preencha os dados e salve para criá-la.');
+        return;
+      }
+
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      const meta = await res.json();
+      const data = JSON.parse(fromBase64(meta.content.replace(/\n/g, '')));
+
+      // preencher form
+      document.getElementById('semana-num').value     = semana;
+      document.getElementById('semana-periodo').value = data.periodo    || '';
+      document.getElementById('semana-status').value  = data.status     || 'Em andamento';
+      document.getElementById('m-alcance').value      = data.metricas?.alcance           || '0';
+      document.getElementById('m-engajamento').value  = data.metricas?.engajamento        || '0%';
+      document.getElementById('m-seguidores').value   = data.metricas?.seguidores_ganhos  || '0';
+      document.getElementById('observacoes').value    = data.observacoes || '';
+
+      clearPosts();
+      if (data.posts && data.posts.length > 0) {
+        data.posts.forEach(p => addPost(p));
+      } else {
+        addPost();
+      }
+
+      clearFeedback();
+      setFeedback('success', '✅ Semana ' + semana + ' carregada com sucesso.');
+    } catch (e) {
+      setFeedback('error', '❌ Erro ao carregar: ' + e.message);
+    } finally {
+      document.getElementById('btn-load').disabled = false;
+    }
+  });
+
+  // ── SAVE ─────────────────────────────────────────
+  document.getElementById('btn-save').addEventListener('click', async () => {
+    const token = getToken();
+    if (!token) { setFeedback('error', '⚠️ Cole seu token GitHub antes de salvar.'); return; }
+
+    const semana = getSemana();
+
+    const payload = {
+      semana,
+      periodo:    document.getElementById('semana-periodo').value.trim(),
+      status:     document.getElementById('semana-status').value,
+      posts:      collectPosts(),
+      metricas: {
+        alcance:           document.getElementById('m-alcance').value.trim(),
+        engajamento:       document.getElementById('m-engajamento').value.trim(),
+        seguidores_ganhos: document.getElementById('m-seguidores').value.trim(),
+      },
+      observacoes: document.getElementById('observacoes').value.trim(),
+    };
+
+    const jsonStr = JSON.stringify(payload, null, 2);
+    const content = toBase64(jsonStr);
+
+    setFeedback('loading', '<span class="spinner"></span>&nbsp; Salvando…');
+    document.getElementById('btn-save').disabled = true;
+
+    try {
+      // 1. Pegar SHA atual (se existir)
+      let sha = undefined;
+      const getRes = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${apiPath(semana)}`,
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } }
+      );
+      if (getRes.ok) {
+        const meta = await getRes.json();
+        sha = meta.sha;
+      } else if (getRes.status !== 404) {
+        throw new Error('Erro ao ler SHA: HTTP ' + getRes.status);
+      }
+
+      // 2. PUT
+      const body = {
+        message: `update: semana-${semana} dados.json`,
+        content,
+        ...(sha ? { sha } : {}),
+      };
+
+      const putRes = await fetch(
+        `https://api.github.com/repos/${OWNER}/${REPO}/contents/${apiPath(semana)}`,
+        {
+          method:  'PUT',
+          headers: {
+            Authorization:  `Bearer ${token}`,
+            Accept:         'application/vnd.github+json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!putRes.ok) {
+        const errData = await putRes.json().catch(() => ({}));
+        throw new Error(errData.message || 'HTTP ' + putRes.status);
+      }
+
+      setFeedback('success',
+        '✅ Semana ' + semana + ' atualizada!<br>' +
+        '<span style="font-size:.8rem;opacity:.8">Site ao vivo em aproximadamente 1 minuto → ' +
+        '<a href="https://gabrielolio.github.io/fialho-motors/semana-' + semana + '/" ' +
+        'target="_blank" style="color:inherit;text-decoration:underline">' +
+        'gabrielolio.github.io/fialho-motors/semana-' + semana + '/</a></span>'
+      );
+    } catch (e) {
+      setFeedback('error', '❌ Erro ao salvar: ' + e.message);
+    } finally {
+      document.getElementById('btn-save').disabled = false;
+    }
+  });
+
+  // ── ADD POST BUTTON ───────────────────────────────
+  document.getElementById('btn-add-post').addEventListener('click', () => {
+    const count = document.querySelectorAll('.post-row').length;
+    if (count >= 6) {
+      setFeedback('error', '⚠️ Máximo de 6 posts por semana.');
+      return;
+    }
+    addPost();
+  });
+
+  // ── INIT ─────────────────────────────────────────
+  addPost();
+</script>
+</body>
+</html>
