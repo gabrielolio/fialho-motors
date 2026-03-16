@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Semana 02 — Fialho Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0F0F0F;
+      --bg2:          #1A1A1A;
+      --bg3:          #222222;
+      --bg4:          #2A2A2A;
+      --gold:         #C8A96E;
+      --gold-light:   #DFC08A;
+      --gold-dim:     rgba(200,169,110,0.12);
+      --gold-border:  rgba(200,169,110,0.28);
+      --green:        #2D6A4F;
+      --green-light:  #40916C;
+      --green-accent: #52B788;
+      --green-dim:    rgba(82,183,136,0.12);
+      --green-border: rgba(82,183,136,0.28);
+      --text:         #F0EDE8;
+      --text-2:       #C8C2BB;
+      --text-muted:   #7A7570;
+      --amber:        #F2C94C;
+      --amber-dim:    rgba(242,201,76,0.12);
+      --red:          #EB5757;
+      --red-dim:      rgba(235,87,87,0.12);
+      --radius:       14px;
+      --radius-sm:    10px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 4px; }
+
+    /* ═══ HEADER ═══ */
+    header {
+      background: linear-gradient(135deg, var(--green) 0%, #1B4332 100%);
+      padding: 28px 20px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 14px;
+    }
+
+    .header-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green-accent);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    header h1 span { color: var(--gold); }
+
+    header p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+    }
+
+    /* ═══ NAV TABS ═══ */
+    .nav-tabs {
+      display: flex;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--bg4);
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-tabs::-webkit-scrollbar { display: none; }
+
+    .nav-tab {
+      flex-shrink: 0;
+      padding: 14px 18px;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-tab.active {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    .nav-tab:not(.active):hover { color: var(--text-2); }
+
+    /* ═══ MAIN ═══ */
+    main {
+      padding: 24px 18px 80px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .tab-panel { display: none; animation: fadeIn 0.25s ease; }
+    .tab-panel.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ═══ PROGRESS RING ═══ */
+    .progress-hero {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--bg3) 100%);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .ring-wrap {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      flex-shrink: 0;
+    }
+
+    .ring-wrap svg {
+      width: 80px;
+      height: 80px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: var(--bg4);
+      stroke-width: 6;
+    }
+
+    .ring-fill {
+      fill: none;
+      stroke: var(--gold);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 226;
+      stroke-dashoffset: 226;
+      transition: stroke-dashoffset 1s ease;
+    }
+
+    .ring-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+    }
+
+    .progress-info h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .progress-info p {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ═══ SECTION TITLES ═══ */
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+
+    .section-sub {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* ═══ TIMELINE ═══ */
+    .timeline { position: relative; padding-left: 28px; }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--bg4);
+    }
+
+    .tl-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .tl-dot {
+      position: absolute;
+      left: -28px;
+      top: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+
+    .tl-dot.done { background: var(--green-accent); }
+    .tl-dot.active { background: var(--gold); animation: pulse 2s infinite; }
+    .tl-dot.pending { background: var(--bg4); border: 2px solid var(--text-muted); }
+
+    .tl-dot svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .tl-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 16px;
+      transition: border-color 0.2s;
+    }
+
+    .tl-item.active .tl-card {
+      border-color: var(--gold-border);
+      background: linear-gradient(135deg, var(--bg2) 0%, rgba(200,169,110,0.04) 100%);
+    }
+
+    .tl-date {
+      font-size: 0.62rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .tl-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .tl-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .tl-status {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .tl-status.done { background: var(--green-dim); color: var(--green-accent); }
+    .tl-status.active { background: var(--amber-dim); color: var(--amber); }
+    .tl-status.pending { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+    /* ═══ DELIVERABLE CARDS ═══ */
+    .del-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .del-card:hover { border-color: var(--gold-border); }
+
+    .del-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .del-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .del-icon.gold { background: var(--gold-dim); }
+    .del-icon.green { background: var(--green-dim); }
+
+    .del-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--text);
+    }
+
+    .del-meta {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .del-body {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ═══ STAT GRID ═══ */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══ CONTACT BAR ═══ */
+    .contact-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg2);
+      border-top: 1px solid var(--bg4);
+      padding: 12px 18px;
+      display: flex;
+      gap: 10px;
+      z-index: 200;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .contact-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      border: none;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .contact-btn.primary {
+      background: var(--green);
+      color: #fff;
+    }
+
+    .contact-btn.primary:hover { background: var(--green-light); }
+
+    .contact-btn.secondary {
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid var(--gold-border);
+    }
+
+    /* ═══ NOTES ═══ */
+    .note {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 0.78rem;
+      color: var(--text-2);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .note strong { color: var(--gold); }
+
+    .divider {
+      height: 1px;
+      background: var(--bg4);
+      margin: 24px 0;
+    }
+
+    /* ═══ TEAM ═══ */
+    .team-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .team-card {
+      background: var(--bg2);
+      border: 1px solid var(--bg4);
+      border-radius: var(--radius);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+      border: 2px solid var(--gold-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin: 0 auto 10px;
+    }
+
+    .team-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .team-role {
+      font-size: 0.65rem;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-badge">
+    <span class="dot"></span>
+    Semana 02 — Em andamento
+  </div>
+  <h1>Fialho <span>Motors</span></h1>
+  <p>Acompanhamento semanal do seu marketing digital.<br>16 a 22 de marco de 2026</p>
+</header>
+
+<!-- ═══ TABS ═══ -->
+<nav class="nav-tabs" role="tablist">
+  <button class="nav-tab active" data-tab="progresso">Progresso</button>
+  <button class="nav-tab" data-tab="entregas">Entregas</button>
+  <button class="nav-tab" data-tab="cronograma">Cronograma</button>
+  <button class="nav-tab" data-tab="equipe">Equipe</button>
+</nav>
+
+<main>
+
+<!-- ═══ TAB: PROGRESSO ═══ -->
+<div class="tab-panel active" id="tab-progresso">
+
+  <!-- Progress Ring -->
+  <div class="progress-hero">
+    <div class="ring-wrap">
+      <svg viewBox="0 0 80 80">
+        <circle class="ring-bg" cx="40" cy="40" r="36"/>
+        <circle class="ring-fill" id="progressRing" cx="40" cy="40" r="36"/>
+      </svg>
+      <div class="ring-text" id="progressPct">0%</div>
+    </div>
+    <div class="progress-info">
+      <h3>Semana 02</h3>
+      <p>Primeira semana de producao de conteudo. Estrutura montada, agora e hora de entregar.</p>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Posts planejados</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">30</div>
+      <div class="stat-label">Msgs bom dia</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">6</div>
+      <div class="stat-label">Stories</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">1</div>
+      <div class="stat-label">Reel previsto</div>
+    </div>
+  </div>
+
+  <h2 class="section-title">O que estamos fazendo</h2>
+  <p class="section-sub">Cada item e produzido, revisado e enviado para sua aprovacao antes de publicar</p>
+
+  <!-- Timeline -->
+  <div class="timeline">
+
+    <div class="tl-item done">
+      <div class="tl-dot done">
+        <svg viewBox="0 0 12 10" fill="none"><path d="M1 5L4.5 8.5L11 1" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="tl-card">
+        <div class="tl-date">Semana 01 — 10 a 15 de marco</div>
+        <div class="tl-title">Estrutura e planejamento</div>
+        <div class="tl-desc">Hub operacional criado. Brandbook documentado. Tom de voz definido. Esteira semanal planejada. Squad de producao configurado.</div>
+        <span class="tl-status done">Concluido</span>
+      </div>
+    </div>
+
+    <div class="tl-item active">
+      <div class="tl-dot active"></div>
+      <div class="tl-card">
+        <div class="tl-date">Semana 02 — 16 a 22 de marco</div>
+        <div class="tl-title">Primeira producao de conteudo</div>
+        <div class="tl-desc">Produzindo o primeiro pacote de posts, stories e banco de mensagens de bom dia. Tudo sera enviado para aprovacao do Vitor antes de publicar.</div>
+        <span class="tl-status active">Em andamento</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot pending"></div>
+      <div class="tl-card">
+        <div class="tl-date">Semana 03 — 23 a 29 de marco</div>
+        <div class="tl-title">Producao + primeiras metricas</div>
+        <div class="tl-desc">Segundo pacote de conteudo. Analise das primeiras metricas de engajamento. Ajuste de tom e formato baseado nos resultados reais.</div>
+        <span class="tl-status pending">Programado</span>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot pending"></div>
+      <div class="tl-card">
+        <div class="tl-date">Semana 04 — 30 mar a 5 abr</div>
+        <div class="tl-title">Relatorio mensal + Reel #1</div>
+        <div class="tl-desc">Primeiro relatorio completo de resultados. Entrega do primeiro Reel filmado e editado. Renovacao do banco de WhatsApp bom dia para abril.</div>
+        <span class="tl-status pending">Programado</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ TAB: ENTREGAS ═══ -->
+<div class="tab-panel" id="tab-entregas">
+
+  <h2 class="section-title">Entregas desta semana</h2>
+  <p class="section-sub">Cada item passa por revisao de qualidade antes de chegar ate voce</p>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon gold">📱</div>
+      <div>
+        <div class="del-name">Post #1 — Segunda</div>
+        <div class="del-meta">Institucional / Posicionamento GWM</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Post de posicionamento: "A GWM chegou em Campo Grande." Apresenta a Fialho Motors como especialista GWM na regiao. Duas versoes de legenda (A e B) para voce escolher. Stories de 3 telas acompanham.
+    </div>
+  </div>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon gold">🚗</div>
+      <div>
+        <div class="del-name">Post #2 — Quarta</div>
+        <div class="del-meta">Destaque de veiculo / Haval H6</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Spotlight no Haval H6 — o SUV mais vendido da GWM no Brasil. Foco em familia, seguranca (5 estrelas Latin NCAP) e tecnologia hibrida. Foto principal com informacoes limpas embaixo, no estilo aprovado por Ed.
+    </div>
+  </div>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon gold">💡</div>
+      <div>
+        <div class="del-name">Post #3 — Sexta</div>
+        <div class="del-meta">Dica da Semana / Educativo</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Conteudo educativo com dica pratica sobre cuidados com o veiculo ou tecnologia hibrida/eletrica. Formato carrossel simples — informacao util que agrega valor sem pressao de venda.
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon green">☀️</div>
+      <div>
+        <div class="del-name">Banco de Bom Dia</div>
+        <div class="del-meta">30 mensagens para o mes</div>
+      </div>
+    </div>
+    <div class="del-body">
+      30 mensagens unicas de "bom dia" para publicar diariamente nos stories e WhatsApp. Variacao de temas: motivacao, dicas de carro, referencias a Campo Grande e ao Pantanal, curiosidades GWM. Tom amigavel e proximo, mantendo profissionalismo.
+    </div>
+  </div>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon green">📊</div>
+      <div>
+        <div class="del-name">Estrategia de Conteudo</div>
+        <div class="del-meta">Calendario editorial + pilares</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Documento completo com: pilares de conteudo da marca, calendario editorial mensal, temas por semana, conceitos dos 4 Reels mensais, e guia de tom de voz. A base que guia toda a producao.
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Como funciona a aprovacao:</strong> Voce recebe cada conteudo via WhatsApp antes de publicar. E so responder "ok" ou pedir ajustes. Nada e publicado sem sua aprovacao.
+  </div>
+
+</div>
+
+<!-- ═══ TAB: CRONOGRAMA ═══ -->
+<div class="tab-panel" id="tab-cronograma">
+
+  <h2 class="section-title">Cronograma mensal</h2>
+  <p class="section-sub">Visao geral de marco e o que vem pela frente</p>
+
+  <div class="del-card" style="border-left: 3px solid var(--green-accent);">
+    <div class="tl-date">Fase 1 — Construcao da presenca (atual)</div>
+    <div class="tl-title" style="font-size:1rem;">R$ 500/mes</div>
+    <div class="del-body" style="margin-top:8px;">
+      <strong style="color:var(--text);">O que inclui:</strong><br>
+      &bull; 3 posts por semana (segunda, quarta, sexta)<br>
+      &bull; Bom dia diario (stories + WhatsApp)<br>
+      &bull; 4 Reels por mes<br>
+      &bull; Criativos de estoque em ate 24h<br>
+      &bull; Posts de carros vendidos<br>
+      &bull; Identidade visual base<br>
+      &bull; Gestao do perfil Instagram
+    </div>
+  </div>
+
+  <div class="del-card" style="opacity:0.6;">
+    <div class="tl-date">Fase 2 — Automacao de funil (proximo mes)</div>
+    <div class="tl-title" style="font-size:1rem;">R$ 1.200/mes</div>
+    <div class="del-body" style="margin-top:8px;">
+      <strong style="color:var(--text);">O que sera adicionado:</strong><br>
+      &bull; Agente de IA no WhatsApp (primeiro atendimento automatico)<br>
+      &bull; Funil de leads por e-mail<br>
+      &bull; Dashboard de leads e conversoes<br>
+      &bull; Integracao Shopcar + Instagram + WhatsApp
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">Marco 2026</h2>
+  <p class="section-sub">Entregas semana a semana</p>
+
+  <div id="marchCalendar"></div>
+
+</div>
+
+<!-- ═══ TAB: EQUIPE ═══ -->
+<div class="tab-panel" id="tab-equipe">
+
+  <h2 class="section-title">Sua equipe</h2>
+  <p class="section-sub">Quem cuida do marketing digital da Fialho Motors</p>
+
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">🎯</div>
+      <div class="team-name">Vitor</div>
+      <div class="team-role">Gestao e aprovacao</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">⚡</div>
+      <div class="team-name">Gabriel</div>
+      <div class="team-role">Producao e tecnologia</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Como nos comunicamos:</strong> Todo conteudo e enviado via WhatsApp para o Vitor. Ele aprova ou pede ajustes. Nada e publicado sem confirmacao. Em caso de urgencia, Vitor pode postar diretamente os bom dias e posts de estoque.
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">Contato rapido</h2>
+  <p class="section-sub">Precisou de algo? Chama no WhatsApp</p>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon green">📲</div>
+      <div>
+        <div class="del-name">WhatsApp — Canal principal</div>
+        <div class="del-meta">Aprovacoes, ajustes e duvidas</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Toda comunicacao sobre conteudo passa pelo WhatsApp. Envie fotos de novos carros, avise sobre vendas, e aprove os posts da semana por la.
+    </div>
+  </div>
+
+  <div class="del-card">
+    <div class="del-header">
+      <div class="del-icon gold">🌐</div>
+      <div>
+        <div class="del-name">Hub Online</div>
+        <div class="del-meta">Acesse a qualquer momento</div>
+      </div>
+    </div>
+    <div class="del-body">
+      Este site e o seu painel de acompanhamento. Brandbook, guias operacionais, estrategia e progresso — tudo em um lugar. Salve nos favoritos do celular.
+    </div>
+  </div>
+
+</div>
+
+</main>
+
+<!-- ═══ CONTACT BAR ═══ -->
+<div class="contact-bar">
+  <a href="https://wa.me/" class="contact-btn primary">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    WhatsApp
+  </a>
+  <a href="https://gabrielolio.github.io/fialho-motors/" class="contact-btn secondary">
+    Hub completo
+  </a>
+</div>
+
+<script>
+/* ═══ TABS ═══ */
+document.querySelectorAll('.nav-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = document.getElementById('tab-' + btn.dataset.tab);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+/* ═══ PROGRESS RING ═══ */
+function updateProgress(pct) {
+  const ring = document.getElementById('progressRing');
+  const text = document.getElementById('progressPct');
+  if (!ring || !text) return;
+  const circumference = 2 * Math.PI * 36; // r=36
+  const offset = circumference - (pct / 100) * circumference;
+  ring.style.strokeDashoffset = offset;
+  text.textContent = pct + '%';
+}
+
+// Simula progresso baseado no dia da semana
+const today = new Date();
+const dayOfWeek = today.getDay();
+// 0=dom, 1=seg...6=sab
+const progressByDay = { 0: 15, 1: 30, 2: 45, 3: 60, 4: 75, 5: 90, 6: 100 };
+setTimeout(() => updateProgress(progressByDay[dayOfWeek] || 15), 500);
+
+/* ═══ MARCH CALENDAR ═══ */
+function renderMarchCalendar() {
+  const el = document.getElementById('marchCalendar');
+  if (!el) return;
+
+  const weeks = [
+    { num: '01', dates: '10-15 mar', title: 'Estrutura e planejamento', status: 'done', items: ['Hub operacional', 'Brandbook', 'Tom de voz', 'Esteira semanal'] },
+    { num: '02', dates: '16-22 mar', title: 'Primeira producao', status: 'active', items: ['3 posts + stories', 'Banco 30 bom dias', 'Estrategia de conteudo'] },
+    { num: '03', dates: '23-29 mar', title: 'Producao + metricas', status: 'pending', items: ['3 posts + stories', 'Analise de engajamento', 'Ajustes de formato'] },
+    { num: '04', dates: '30 mar-5 abr', title: 'Relatorio + Reel', status: 'pending', items: ['Relatorio mensal', 'Reel #1', 'Novo banco bom dia'] }
+  ];
+
+  let html = '';
+  weeks.forEach(w => {
+    const statusColors = {
+      done: { bg: 'var(--green-dim)', color: 'var(--green-accent)', label: 'Concluido' },
+      active: { bg: 'var(--amber-dim)', color: 'var(--amber)', label: 'Em andamento' },
+      pending: { bg: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', label: 'Programado' }
+    };
+    const s = statusColors[w.status];
+
+    html += `
+      <div style="background:var(--bg2);border:1px solid var(--bg4);border-radius:14px;padding:16px;margin-bottom:12px;${w.status === 'active' ? 'border-color:var(--gold-border);' : ''}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div>
+            <div style="font-size:0.62rem;color:var(--gold);text-transform:uppercase;letter-spacing:0.12em;font-weight:700;">Semana ${w.num}</div>
+            <div style="font-family:'Playfair Display',serif;font-size:0.95rem;color:var(--text);margin-top:2px;">${w.title}</div>
+          </div>
+          <span style="font-size:0.58rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:3px 10px;border-radius:20px;background:${s.bg};color:${s.color};">${s.label}</span>
+        </div>
+        <div style="font-size:0.72rem;color:var(--text-muted);margin-bottom:8px;">${w.dates}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;">
+          ${w.items.map(item => `<span style="font-size:0.68rem;padding:3px 10px;border-radius:6px;background:var(--bg3);color:var(--text-2);">${item}</span>`).join('')}
+        </div>
+      </div>`;
+  });
+
+  el.innerHTML = html;
+}
+
+renderMarchCalendar();
+</script>
+
+</body>
+</html>
