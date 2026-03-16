@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>Semana XX — Fialho Motors</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Backgrounds */
+      --bg:            #0A0A0A;
+      --bg-2:          #111111;
+      --bg-3:          #181818;
+      --bg-4:          #202020;
+      --bg-glass:      rgba(255, 255, 255, 0.03);
+      --bg-glass-2:    rgba(255, 255, 255, 0.055);
+
+      /* Brand */
+      --green:         #2D6A4F;
+      --green-light:   #3A8A65;
+      --green-dark:    #1B4332;
+      --green-dim:     rgba(45, 106, 79, 0.18);
+      --green-border:  rgba(45, 106, 79, 0.32);
+
+      --gold:          #C8A96E;
+      --gold-light:    #DFC08A;
+      --gold-dim:      rgba(200, 169, 110, 0.12);
+      --gold-border:   rgba(200, 169, 110, 0.22);
+
+      --red-logo:      #C0392B;
+      --red-dim:       rgba(192, 57, 43, 0.15);
+
+      /* Text */
+      --text:          #F0EDE8;
+      --text-2:        #C0BAB2;
+      --text-muted:    #706A63;
+      --text-faint:    #3D3933;
+
+      /* Status — post items */
+      --s-pub:         #52B788;
+      --s-pub-dim:     rgba(82, 183, 136, 0.13);
+      --s-sche:        #74B3CE;
+      --s-sche-dim:    rgba(116, 179, 206, 0.13);
+      --s-prod:        #F4A261;
+      --s-prod-dim:    rgba(244, 162, 97, 0.13);
+      --s-pend:        #9E9690;
+      --s-pend-dim:    rgba(158, 150, 144, 0.10);
+
+      /* Status — semana badge */
+      --status-done:      #52B788;
+      --status-done-dim:  rgba(82, 183, 136, 0.14);
+      --status-wip:       #F4A261;
+      --status-wip-dim:   rgba(244, 162, 97, 0.14);
+      --status-plan:      #74B3CE;
+      --status-plan-dim:  rgba(116, 179, 206, 0.14);
+
+      /* Layout */
+      --radius:        14px;
+      --radius-sm:     9px;
+      --radius-xs:     6px;
+    }
+
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 3px; }
+
+    /* ── HEADER ─────────────────────────────── */
+    .site-header {
+      position: relative;
+      overflow: hidden;
+      padding: 40px 24px 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .site-header::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      left: -40px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(45,106,79,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .site-header::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      right: -20px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Brand strip */
+    .brand-strip {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo-f {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+      border: 1px solid var(--green-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-f span {
+      font-family: 'Urbanist', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--red-logo);
+      line-height: 1;
+    }
+
+    .brand-name {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: 0.01em;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover { color: var(--gold); }
+
+    .back-link svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* Week headline */
+    .week-eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .header-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .week-headline {
+      font-family: 'Urbanist', sans-serif;
+      font-size: clamp(1.4rem, 5vw, 1.9rem);
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .badge-done { background: var(--status-done-dim); color: var(--status-done); }
+    .badge-wip  { background: var(--status-wip-dim);  color: var(--status-wip); }
+    .badge-plan { background: var(--status-plan-dim); color: var(--status-plan); }
+
+    .week-period {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── MAIN CONTENT ───────────────────────── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 32px 20px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .section-eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    /* ── METRICS ────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .metric-card {
+      background: var(--bg-glass);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 18px 14px 16px;
+      text-align: center;
+      transition: border-color 0.2s;
+    }
+
+    .metric-card:hover {
+      border-color: var(--gold-border);
+    }
+
+    .metric-value {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .metric-value.unavailable {
+      color: var(--text-muted);
+      font-size: 1.4rem;
+    }
+
+    .metric-label {
+      font-size: 0.67rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    /* ── DELIVERABLES LIST ──────────────────── */
+    .deliverables-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .deliverable-card {
+      background: var(--bg-glass);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .deliverable-card:hover {
+      background: var(--bg-glass-2);
+      border-color: rgba(255,255,255,0.11);
+    }
+
+    .deliverable-type {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 4px;
+      opacity: 0.8;
+    }
+
+    .deliverable-title {
+      font-family: 'Urbanist', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+      margin-bottom: 5px;
+    }
+
+    .deliverable-desc {
+      font-size: 0.8rem;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+
+    .deliverable-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Item status dot+label */
+    .item-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 3px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    .item-status::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .is-pub  { background: var(--s-pub-dim);  color: var(--s-pub); }
+    .is-sche { background: var(--s-sche-dim); color: var(--s-sche); }
+    .is-prod { background: var(--s-prod-dim); color: var(--s-prod); }
+    .is-pend { background: var(--s-pend-dim); color: var(--s-pend); }
+
+    /* ── NOTES CARD ─────────────────────────── */
+    .notes-card {
+      background: var(--gold-dim);
+      border: 1px solid var(--gold-border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+    }
+
+    .notes-card p {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      line-height: 1.65;
+    }
+
+    /* ── EMPTY STATE ────────────────────────── */
+    .empty-state {
+      text-align: center;
+      padding: 32px 20px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      background: var(--bg-glass);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius);
+    }
+
+    /* ── CTA WHATSAPP ───────────────────────── */
+    .cta-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .cta-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .btn-whatsapp {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'Urbanist', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 14px 28px;
+      border-radius: 50px;
+      border: 1px solid var(--green-border);
+      box-shadow: 0 4px 24px rgba(45,106,79,0.2);
+      transition: box-shadow 0.25s, transform 0.2s;
+    }
+
+    .btn-whatsapp:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(45,106,79,0.35);
+    }
+
+    .btn-whatsapp svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ─────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 24px 20px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--text-faint);
+      letter-spacing: 0.08em;
+    }
+
+    footer span {
+      color: var(--gold);
+      opacity: 0.6;
+    }
+
+    /* ── ANIMATIONS ─────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-1 { animation: fadeUp 0.45s ease both; }
+    .animate-2 { animation: fadeUp 0.45s 0.07s ease both; }
+    .animate-3 { animation: fadeUp 0.45s 0.14s ease both; }
+    .animate-4 { animation: fadeUp 0.45s 0.21s ease both; }
+    .animate-5 { animation: fadeUp 0.45s 0.28s ease both; }
+
+    /* ── RESPONSIVE ─────────────────────────── */
+    @media (max-width: 360px) {
+      .metrics-grid { gap: 8px; }
+      .metric-value { font-size: 1.6rem; }
+      .deliverable-card { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+
+      <!-- Brand strip -->
+      <div class="brand-strip animate-1">
+        <div class="logo-f">
+          <span>F</span>
+        </div>
+        <span class="brand-name">Fialho Motors</span>
+      </div>
+
+      <!-- Back to relatorio -->
+      <a href="../relatorio/" class="back-link animate-1">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 4L6 8l4 4"/>
+        </svg>
+        Voltar ao relatorio
+      </a>
+
+      <!-- Week label -->
+      <div class="week-eyebrow animate-2">Semana 01 &middot; Marco 2026</div>
+
+      <!-- Title + status -->
+      <div class="header-title-row animate-2">
+        <h1 class="week-headline">Lancamento e primeiros conteudos</h1>
+        <!-- STATUS: troque a classe conforme o estado real -->
+        <!-- badge-done = Concluida / badge-wip = Em andamento / badge-plan = Planejada -->
+        <span class="status-badge badge-done">Concluida</span>
+      </div>
+      <p class="week-period">10 a 16 de marco de 2026</p>
+
+    </div>
+  </header>
+
+  <main>
+
+    <!-- METRICAS -->
+    <!-- Se a semana ainda nao tiver dados, use class="metric-value unavailable" e texto "—" -->
+    <section class="animate-3">
+      <div class="section-eyebrow">Resultados da semana</div>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-value">—</div>
+          <div class="metric-label">Alcance</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">—</div>
+          <div class="metric-label">Engajamento</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">—</div>
+          <div class="metric-label">Seg. ganhos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ENTREGAS DA SEMANA -->
+    <section class="animate-4">
+      <div class="section-eyebrow">Entregas da semana</div>
+      <div class="deliverables-list">
+
+        <!--
+          TEMPLATE DE CARD DE ENTREGA
+          Duplique este bloco para cada entrega.
+          Status disponiveis:
+            is-pub  = Publicado
+            is-sche = Agendado
+            is-prod = Em producao
+            is-pend = Pendente
+        -->
+        <div class="deliverable-card">
+          <div>
+            <div class="deliverable-type">Reels</div>
+            <div class="deliverable-title">Apresentacao da concessionaria</div>
+            <div class="deliverable-desc">Video de apresentacao da Fialho Motors — equipe, estrutura e diferenciais GWM.</div>
+            <div class="deliverable-meta">Publicado em 12/03</div>
+          </div>
+          <span class="item-status is-pub">Publicado</span>
+        </div>
+
+        <div class="deliverable-card">
+          <div>
+            <div class="deliverable-type">Carrossel</div>
+            <div class="deliverable-title">Destaques do estoque — Marco</div>
+            <div class="deliverable-desc">Selecao dos veiculos em destaque para o mes, com especificacoes e preco de entrada.</div>
+            <div class="deliverable-meta">Agendado para 14/03</div>
+          </div>
+          <span class="item-status is-sche">Agendado</span>
+        </div>
+
+        <div class="deliverable-card">
+          <div>
+            <div class="deliverable-type">Stories</div>
+            <div class="deliverable-title">Stories de boas-vindas (6 telas)</div>
+            <div class="deliverable-desc">Sequencia de stories apresentando a concessionaria e chamada para seguir o perfil.</div>
+            <div class="deliverable-meta">Publicado em 10/03</div>
+          </div>
+          <span class="item-status is-pub">Publicado</span>
+        </div>
+
+        <div class="deliverable-card">
+          <div>
+            <div class="deliverable-type">Bom dia &middot; WhatsApp</div>
+            <div class="deliverable-title">Mensagens diarias (7 mensagens)</div>
+            <div class="deliverable-desc">Mensagens de bom dia enviadas de segunda a domingo para a lista de transmissao.</div>
+            <div class="deliverable-meta">Entregues ao longo da semana</div>
+          </div>
+          <span class="item-status is-pub">Concluido</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OBSERVACOES (remova esta secao se nao houver observacoes) -->
+    <section class="animate-4">
+      <div class="section-eyebrow">Observacoes</div>
+      <div class="notes-card">
+        <p>Primeira semana de operacao. Os primeiros conteudos foram publicados conforme o planejamento inicial. Os resultados de alcance e engajamento serao acompanhados a partir da proxima semana.</p>
+      </div>
+    </section>
+
+    <!-- CTA WHATSAPP -->
+    <section class="cta-section animate-5">
+      <p class="cta-label">Duvidas sobre esta semana? Fale conosco.</p>
+      <a href="https://wa.me/" class="btn-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        Falar pelo WhatsApp
+      </a>
+    </section>
+
+  </main>
+
+  <footer>
+    Fialho Motors &middot; <span>GWM</span> &middot; Campo Grande, MS
+  </footer>
+
+</body>
+</html>
